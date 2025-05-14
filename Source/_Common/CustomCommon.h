@@ -6,7 +6,7 @@
 #define	__NEUZ_TITLE "Zeus FlyFF"				        //| Neuz Wnd Title
 #define __NEUZ_PHASH "kikugalanet"			        //| Password hash
 #define	__NEUZ_BOOTS __LOCAL_TESTS == TRUE ? "" : "sunkist"		
-#define	__MAX_SPEED	 200					        //| Max speed
+#define	__MAX_SPEED	 250					        //| Max speed
 
 // Systems & Features
 #define __FL_TDM									//| Team vs Team pvp mode

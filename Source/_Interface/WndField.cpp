@@ -6824,7 +6824,7 @@ void CWndInventory::RunUpgrade(CItemElem* pItem)
 		else if (pItemProp->IsNeedTarget())
 		{
 			m_pUpgradeItem = pItem;
-			m_dwEnchantWaitTime = g_tmCurrent + SEC(4);
+			m_dwEnchantWaitTime = g_tmCurrent + 100;
 			return;
 		}
 		else if (pItemProp->dwItemKind3 == IK3_PIERDICE)
@@ -6834,7 +6834,7 @@ void CWndInventory::RunUpgrade(CItemElem* pItem)
 				if ((static_cast<CItemElem*>(pItem))->IsCollector(TRUE) || pItem->GetProp()->dwItemKind2 == IK2_JEWELRY)
 				{
 					m_pUpgradeItem = pItem;
-					m_dwEnchantWaitTime = g_tmCurrent + SEC(4);
+					m_dwEnchantWaitTime = g_tmCurrent + 100;
 					return;
 				}
 				g_WndMng.PutString(prj.GetText(TID_GAME_NOTEQUALITEM), NULL, prj.GetTextColor(TID_GAME_NOTEQUALITEM));
@@ -6844,7 +6844,7 @@ void CWndInventory::RunUpgrade(CItemElem* pItem)
 		}
 
 		m_pUpgradeItem = pItem;
-		m_dwEnchantWaitTime = g_tmCurrent + SEC(4);
+		m_dwEnchantWaitTime = g_tmCurrent + 100;
 	}
 }
 
@@ -14699,7 +14699,7 @@ void CWndSmeltSafety::StartProcess(BOOL bManual)
 			m_dwEnchantTimeStart = g_tmCurrent;
 	}
 	else
-		m_dwEnchantTimeStart = g_tmCurrent + 750;
+		m_dwEnchantTimeStart = g_tmCurrent + 200;
 
 	m_bRealStart = TRUE;
 }
@@ -14950,7 +14950,7 @@ BOOL CWndSmeltSafety::Process()
 		if (m_dwEnchantTimeStart && g_tmCurrent >= m_dwEnchantTimeStart)
 		{
 			m_bStart = TRUE;
-			m_dwEnchantTimeEnd = m_dwEnchantTimeStart + SEC(1);
+			m_dwEnchantTimeEnd = m_dwEnchantTimeStart + 100;
 		}
 	}
 

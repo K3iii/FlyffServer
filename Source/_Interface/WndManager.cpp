@@ -3082,8 +3082,58 @@ void CWndMgr::PutItemMinMax(CMover* pMover, CItemElem* pItemElem, ItemProp* pIte
         int nFlatBonus = 0;
         switch (pItemElem->m_nWeaponRarity)
         {
-            case 5: nFlatBonus = 50; break;
-            case 4: nFlatBonus = 40; break;
+            case 5: nFlatBonus = 50; 
+					if(pItemProp->dwItemKind1 == IK1_WEAPON)
+					{
+						strAllStats.Format("\nIncrease Attack +20%%\nIncrease Speed +20%%\n Increase Spell Cast +20%%\nIncrease Max HP +20%%\nIncrease Max MP +20%%");
+						pEdit->AddString(strAllStats, dwRarityColor, ESSTY_BOLD);
+					}
+					switch(pItemProp->dwItemKind3)
+					{
+						case IK3_SUIT:
+							strAllStats.Format("\nIncrease Max HP +20%%\nIncrease Max MP +20%%\nIncrease Attack +20%%\nIncrease Speed +20%%\nIncrease Spell Cast +20%%\nIncrease Critical Damage +20%%\nIncrease Magic Damage +20%%");
+							break;
+						case IK3_BOOTS:
+							strAllStats.Format("\nIncrease Speed +20%%\nIncrease Critical Damage +20%%\nIncrease Magic Damage +20%%");
+							break;
+						case IK3_HELMET:
+							strAllStats.Format("\nIncrease Max HP +20%%\nIncrease Max MP +20%%");
+							break;
+						case IK3_GAUNTLET:
+							strAllStats.Format("\nIncrease Spell Cast +20%%\nIncrease Attack +20%%");
+							break;
+						default:
+							strAllStats.Empty();
+							break;
+					}
+					pEdit->AddString(strAllStats, dwRarityColor, ESSTY_BOLD);
+					break;
+            case 4: nFlatBonus = 40; 
+					if(pItemProp->dwItemKind1 == IK1_WEAPON)
+					{
+						strAllStats.Format("\nIncrease Attack +10%%\nIncrease Speed +10%%\n Increase Spell Cast +10%%\nIncrease Max HP +10%%\nIncrease Max MP +10%%");
+						pEdit->AddString(strAllStats, dwRarityColor, ESSTY_BOLD);
+					}
+					switch(pItemProp->dwItemKind3)
+					{
+						case IK3_SUIT:
+							strAllStats.Format("\nIncrease Max HP +10%%\nIncrease Max MP +10%%\nIncrease Attack +10%%\nIncrease Speed +10%%\nIncrease Spell Cast +10%%\nIncrease Critical Damage +10%%\nIncrease Magic Damage +10%%");
+							break;
+						case IK3_BOOTS:
+							strAllStats.Format("\nIncrease Speed +10%%\nIncrease Critical Damage +10%%\nIncrease Magic Damage +10%%");
+							break;
+						case IK3_HELMET:
+							strAllStats.Format("\nIncrease Max HP +10%%\nIncrease Max MP +10%%");
+							break;
+						case IK3_GAUNTLET:
+							strAllStats.Format("\nIncrease Spell Cast +10%%\nIncrease Attack +10%%");
+							break;
+						default:
+							strAllStats.Empty();
+							break;
+					}
+					pEdit->AddString(strAllStats, dwRarityColor, ESSTY_BOLD);	
+					break;
             case 3: nFlatBonus = 30; break;
             case 2: nFlatBonus = 20; break;
             case 1: nFlatBonus = 10; break;

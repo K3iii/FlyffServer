@@ -1378,8 +1378,46 @@ void CMover::SetDestParamEquip(ItemProp* pItemProp, CItemElem* pItemElem, BOOL b
 		{
 			switch (pItemElem->m_nWeaponRarity)
 			{
-				case 5: fFactor = 0.25f; nFlatBonus = 50; break; // Legendary
-                case 4: fFactor = 0.2f;  nFlatBonus = 40; break; // Epic
+				case 5: fFactor = 0.25f; nFlatBonus = 50;
+						if(pItemProp->dwItemKind1 == IK1_WEAPON)
+						{
+							SetDestParam(DST_HP_MAX_RATE, 20, NULL_CHGPARAM);
+							SetDestParam(DST_SPEED, 20, NULL_CHGPARAM);
+							SetDestParam(DST_ATKPOWER_RATE, 20, NULL_CHGPARAM);
+							SetDestParam(DST_SPELL_RATE, 20, NULL_CHGPARAM);
+							SetDestParam(DST_MP_MAX_RATE, 20, NULL_CHGPARAM);
+						} 
+						switch(pItemProp->dwItemKind3)
+						{
+							case IK3_SUIT:
+								SetDestParam(DST_HP_MAX_RATE, 20, NULL_CHGPARAM);
+								SetDestParam(DST_SPEED, 20, NULL_CHGPARAM);
+								SetDestParam(DST_ATKPOWER_RATE, 20, NULL_CHGPARAM);
+								SetDestParam(DST_SPELL_RATE, 20, NULL_CHGPARAM);
+								SetDestParam(DST_MP_MAX_RATE, 20, NULL_CHGPARAM);
+								break;
+						}
+						break; // Legendary
+                case 4: fFactor = 0.2f;  nFlatBonus = 40; 
+						if(pItemProp->dwItemKind1 == IK1_WEAPON)
+						{
+							SetDestParam(DST_HP_MAX_RATE, 10, NULL_CHGPARAM);
+							SetDestParam(DST_SPEED, 10, NULL_CHGPARAM);
+							SetDestParam(DST_ATKPOWER_RATE, 10, NULL_CHGPARAM);
+							SetDestParam(DST_SPELL_RATE, 10, NULL_CHGPARAM);
+							SetDestParam(DST_MP_MAX_RATE, 10, NULL_CHGPARAM);
+						} 
+						switch(pItemProp->dwItemKind3)
+						{
+							case IK3_SUIT:
+								SetDestParam(DST_HP_MAX_RATE, 10, NULL_CHGPARAM);
+								SetDestParam(DST_SPEED, 10, NULL_CHGPARAM);
+								SetDestParam(DST_ATKPOWER_RATE, 10, NULL_CHGPARAM);
+								SetDestParam(DST_SPELL_RATE, 10, NULL_CHGPARAM);
+								SetDestParam(DST_MP_MAX_RATE, 10, NULL_CHGPARAM);
+								break;
+						}
+						break; // Epic
                 case 3: fFactor = 0.15f; nFlatBonus = 30; break; // Unique
                 case 2: fFactor = 0.1f;  nFlatBonus = 20; break; // Rare
                 case 1: fFactor = 0.05f; nFlatBonus = 10; break; // Common
@@ -1509,8 +1547,45 @@ void CMover::ResetDestParamEquip(ItemProp* pItemProp, CItemElem* pItemElem)
 		{
 			switch (pItemElem->m_nWeaponRarity)
 			{
-				case 5: fFactor = 0.25f; nFlatBonus = 50; break; // Legendary
-                case 4: fFactor = 0.2f;  nFlatBonus = 40; break; // Epic
+				case 5: fFactor = 0.25f; nFlatBonus = 50; 
+						if(pItemProp->dwItemKind1 == IK1_WEAPON)
+						{
+							ResetDestParam(DST_HP_MAX_RATE, 20);
+							ResetDestParam(DST_SPEED, 20);
+							ResetDestParam(DST_ATKPOWER_RATE, 20);
+							ResetDestParam(DST_SPELL_RATE, 20);
+							ResetDestParam(DST_MP_MAX_RATE, 20);
+						} 
+						switch(pItemProp->dwItemKind3)
+						{
+							case IK3_SUIT:
+								ResetDestParam(DST_HP_MAX_RATE, 20);
+								ResetDestParam(DST_SPEED, 20);
+								ResetDestParam(DST_ATKPOWER_RATE, 20);
+								ResetDestParam(DST_SPELL_RATE, 20);
+								ResetDestParam(DST_MP_MAX_RATE, 20);
+								break;
+						}
+						break; // Legendary
+                case 4: fFactor = 0.2f;  nFlatBonus = 40; 
+						if(pItemProp->dwItemKind1 == IK1_WEAPON)
+						{
+							ResetDestParam(DST_HP_MAX_RATE, 10);
+							ResetDestParam(DST_SPEED, 10);
+							ResetDestParam(DST_ATKPOWER_RATE, 10);
+							ResetDestParam(DST_SPELL_RATE, 10);
+							ResetDestParam(DST_MP_MAX_RATE, 10);
+						} 
+						switch(pItemProp->dwItemKind3)
+						{
+							case IK3_SUIT:
+								ResetDestParam(DST_HP_MAX_RATE, 10);
+								ResetDestParam(DST_SPEED, 10);
+								ResetDestParam(DST_ATKPOWER_RATE, 10);
+								ResetDestParam(DST_SPELL_RATE, 10);
+								ResetDestParam(DST_MP_MAX_RATE, 10);
+								break;
+						} break; // Epic
                 case 3: fFactor = 0.15f; nFlatBonus = 30; break; // Unique
                 case 2: fFactor = 0.1f;  nFlatBonus = 20; break; // Rare
                 case 1: fFactor = 0.05f; nFlatBonus = 10; break; // Common
