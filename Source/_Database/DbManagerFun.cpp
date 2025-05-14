@@ -862,6 +862,35 @@ int CDbManager::GetOneItem(CItemElem* pItemElem, char* pstrItem, int* pLocation)
 	pItemElem->SetLook(dwItemModel);
 #endif
 
+#ifdef __WEAPON_RARITY
+	pItemElem->m_nWeaponRarity = static_cast<short>(GetIntPaFromStr(pstrItem, pLocation));
+	if (pItemElem->GetProp() && (pItemElem->GetProp()->dwItemKind3 == IK3_SWD
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_AXE
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_CHEERSTICK
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_KNUCKLEHAMMER
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_WAND
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_STAFF
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_THSWD
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_THAXE
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_YOYO
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_BOW
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_SHIELD
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_MAGICBARUNA
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_ZEMBARUNA
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_HELMET
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_SUIT
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_GAUNTLET
+		|| pItemElem->GetProp()->dwItemKind3 == IK3_BOOTS))
+	{
+		if (pItemElem->m_nWeaponRarity < 1)
+			pItemElem->m_nWeaponRarity = 1;
+		else if (pItemElem->m_nWeaponRarity > 5)
+			pItemElem->m_nWeaponRarity = 5;
+	}
+	else
+		pItemElem->m_nWeaponRarity = 0;
+#endif // __WEAPON_RARITY
+
 
 	pItemElem->m_dwObjId = IndexItem;
 

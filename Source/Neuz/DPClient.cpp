@@ -5136,25 +5136,25 @@ void CDPClient::OnGCLog(CAr& ar)
 
 			if (GCGetPoint.uidPlayerAttack == g_pPlayer->m_idPlayer)
 			{
-				strTemp.Format("#cff009c00%s %s %s%s#nc %s ¡æ %s %s %s",
+				strTemp.Format("#cff009c00%s %s %s%s#nc %s ï¿½ï¿½ %s %s %s",
 					szTempGuild, strGuild1, strAtk, szTempPoint, szTempAttack, szTempGuildDef, strGuild2, strDef);
 			}
 			else
 			{
 				if (pPlayerGuild && pPlayerGuild->GetGuildId() == GCGetPoint.uidGuildAttack)
 				{
-					strTemp.Format("#cff009c00%s %s %s%s#nc %s ¡æ %s %s %s",
+					strTemp.Format("#cff009c00%s %s %s%s#nc %s ï¿½ï¿½ %s %s %s",
 						szTempGuild, strGuild1, strAtk, szTempPoint, szTempAttack, szTempGuildDef, strGuild2, strDef);
 				}
 				else
 					if (pPlayerGuild && pPlayerGuild->GetGuildId() == GCGetPoint.uidGuildDefence)
 					{
-						strTemp.Format("%s %s %s%s %s ¡æ #cff9c0000%s %s %s#nc",
+						strTemp.Format("%s %s %s%s %s ï¿½ï¿½ #cff9c0000%s %s %s#nc",
 							szTempGuild, strGuild1, strAtk, szTempPoint, szTempAttack, szTempGuildDef, strGuild2, strDef);
 					}
 					else
 					{
-						strTemp.Format("%s %s %s%s %s ¡æ %s %s %s",
+						strTemp.Format("%s %s %s%s %s ï¿½ï¿½ %s %s %s",
 							szTempGuild, strGuild1, strAtk, szTempPoint, szTempAttack, szTempGuildDef, strGuild2, strDef);
 					}
 			}
@@ -6688,6 +6688,11 @@ void CDPClient::SendDoUseItem(DWORD dwItemId, char* szInput, int nType)
 		}
 	}
 
+	#ifdef __WEAPON_RARITY
+	if (pItemProp && (pItemProp->dwID == II_SYS_SYS_SCR_RARITY || pItemProp->dwID == II_SYS_SYS_SCR_RARITY1))
+		return;
+#endif // __WEAPON_RARITY
+
 	BEFORESENDSOLE(ar, PACKETTYPE_DOUSEITEM, DPID_UNKNOWN);
 	ar << dwItemId;
 	ar << nType;
@@ -7611,19 +7616,19 @@ void CDPClient::OnModifyMode(OBJID objid, CAr& ar)
 			}
 			if (pPlayer->IsMode(OBSERVE_MODE))
 			{
-				str += "°üÀü";
+				str += "ï¿½ï¿½ï¿½ï¿½";
 			}
 			if (pPlayer->IsMode(ITEM_MODE))
 			{
-				str += "¾ÆÀÌÅÛ";
+				str += "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
 			}
 			if (pPlayer->IsMode(NO_ATTACK_MODE))
 			{
-				str += "°ø°Ý";
+				str += "ï¿½ï¿½ï¿½ï¿½";
 			}
 			if (pPlayer->IsMode(COMMUNITY_MODE))
 			{
-				str += "Ä¿¹Â´ÏÆ¼";
+				str += "Ä¿ï¿½Â´ï¿½Æ¼";
 			}
 			if (pPlayer->m_dwMode & ONEKILL_MODE)
 			{
@@ -7632,15 +7637,15 @@ void CDPClient::OnModifyMode(OBJID objid, CAr& ar)
 
 			if (pPlayer->IsMode(SAYTALK_MODE))
 			{
-				str += "±Ó¼Ó¸»ÇÒ¼ö ¾ø´Â";
+				str += "ï¿½Ó¼Ó¸ï¿½ï¿½Ò¼ï¿½ ï¿½ï¿½ï¿½ï¿½";
 			}
 			if (pPlayer->IsMode(TALK_MODE))
 			{
-				str += "Ã¤ÆÃÇÒ¼ö ¾ø´Â";
+				str += "Ã¤ï¿½ï¿½ï¿½Ò¼ï¿½ ï¿½ï¿½ï¿½ï¿½";
 			}
 			if (pPlayer->IsMode(SHOUTTALK_MODE))
 			{
-				str += "¿ÜÄ¡±âÇÒ¼ö ¾ø´Â";
+				str += "ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½Ò¼ï¿½ ï¿½ï¿½ï¿½ï¿½";
 			}
 			if (pPlayer->m_dwMode & DONMOVE_MODE)
 			{
@@ -11058,7 +11063,7 @@ void CDPClient::OnSecretRoomMngState(CAr& ar)
 
 	if (pWndWorld == NULL)
 	{
-		Error("CDPClient::OnGuildCombatNextTimeState()¿¡ World°¡ ¾ø´Ù");
+		Error("CDPClient::OnGuildCombatNextTimeState()ï¿½ï¿½ Worldï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		return;
 	}
 
@@ -11236,7 +11241,7 @@ void CDPClient::OnSecretRoomInfo(CAr& ar)
 
 		if (pWndWorld == NULL)
 		{
-			Error("CDPClient::OnGuildCombatNextTimeState()¿¡ World°¡ ¾ø´Ù");
+			Error("CDPClient::OnGuildCombatNextTimeState()ï¿½ï¿½ Worldï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 			return;
 		}
 

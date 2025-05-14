@@ -1853,10 +1853,10 @@ void CWndMgr::SetPlayer(CMover* pMover)
 		g_Neuz.m_camera.SetPos(pMover->GetPos());
 
 		if (CMover::GetActiveMover() == NULL)
-			Error("SetPlayer : ActiveMover ¾øÀ½");
+			Error("SetPlayer : ActiveMover ï¿½ï¿½ï¿½ï¿½");
 
 		if (CMover::GetActiveMover()->m_pActMover == NULL)
-			Error("SetPlayer : ActionMover ¾øÀ½");
+			Error("SetPlayer : ActionMover ï¿½ï¿½ï¿½ï¿½");
 
 		if (pMover->m_pActMover->IsFly())
 			g_Neuz.m_camera.Unlock();
@@ -2146,7 +2146,7 @@ void CWndMgr::PutToolTip_Skill(DWORD dwSkill, DWORD dwLevel, CPoint point, CRect
 	ItemProp* pSkillProp = prj.GetSkillProp(dwSkill);
 	if (pSkillProp == NULL)
 	{
-		Error("CWndMgr::PutToolTip_Skill : ½ºÅ³(%d)ÀÇ ÇÁ·ÎÆÛÆ¼°¡ ¾÷´Ù.", dwSkill);
+		Error("CWndMgr::PutToolTip_Skill : ï¿½ï¿½Å³(%d)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.", dwSkill);
 		return;	// property not found
 	}
 
@@ -2155,7 +2155,7 @@ void CWndMgr::PutToolTip_Skill(DWORD dwSkill, DWORD dwLevel, CPoint point, CRect
 	AddSkillProp* pAddSkillProp = prj.GetAddSkillProp(pSkillProp->dwSubDefine, dwSkillLevel);
 	if (pAddSkillProp == NULL)
 	{
-		Error("CWndMgr::PutToolTip_Skill : add½ºÅ³(%d)ÀÇ ÇÁ·ÎÆÛÆ¼°¡ ¾÷´Ù.", dwSkill);
+		Error("CWndMgr::PutToolTip_Skill : addï¿½ï¿½Å³(%d)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.", dwSkill);
 		return;	// property not found
 	}
 
@@ -2500,7 +2500,7 @@ DWORD CWndMgr::PutItemName(CItemElem* pItemElem, ItemProp* pItemProp, CEditStrin
 
 	if (pItemElem->IsFlag(CItemElem::binds) && pItemProp->dwFlag != IP_FLAG_EQUIP_BIND)
 		strTemp.Format("%s ", prj.GetText(TID_GAME_TOOLTIP_ITEM_BINDS));
-
+	BOOL bCheckBonus = FALSE;
 	if (pItemProp->dwParts != (DWORD)-1)
 	{
 		PRANDOMOPTITEM pRandomOptItem = CRandomOptItemGen::GetInstance()->GetRandomOptItem(pItemElem->GetRandomOpt());
@@ -2519,6 +2519,49 @@ DWORD CWndMgr::PutItemName(CItemElem* pItemElem, ItemProp* pItemProp, CEditStrin
 	CString stredit;
 	strTemp += str;
 
+#ifdef __WEAPON_RARITY
+	if (pItemElem->m_nWeaponRarity > 0)
+	{
+		CString strWeapon;
+		DWORD dwRarityColor = 0xff199bd5;
+		if (pItemElem->m_nWeaponRarity == 5)
+		{
+			strWeapon.Format("[Legendary] %s", strTemp);
+			dwRarityColor = 0xffb28a33;
+		}
+		else if (pItemElem->m_nWeaponRarity == 4)
+		{
+			strWeapon.Format("[Mythical] %s", strTemp);
+			dwRarityColor = 0xff8847ff;
+		}
+		else if (pItemElem->m_nWeaponRarity == 3)
+		{
+			strWeapon.Format("[Rare] %s", strTemp);
+			dwRarityColor = 0xff4b69ff;
+		}
+		else if (pItemElem->m_nWeaponRarity == 2)
+		{
+			strWeapon.Format("[Uncommon] %s", strTemp);
+			dwRarityColor = 0xff5e98d9;
+		}
+		else
+			strWeapon.Format("[Common] %s", strTemp);
+		if (bCheckBonus)
+			stredit.Format("%s", strWeapon);
+		else
+		{
+			if (pItemElem->GetProp()->IsUltimate())
+				stredit.Format("                 %s", strWeapon);
+			else
+				stredit.Format("%s", strWeapon);
+		}
+
+		pEdit->AddString(stredit, dwRarityColor, ESSTY_BOLD);
+	}
+	else
+	{
+#endif // __WEAPON_RARITY
+
 	if (pItemProp->IsUltimate())
 		stredit.Format("             %s", strTemp);
 	else
@@ -2526,6 +2569,9 @@ DWORD CWndMgr::PutItemName(CItemElem* pItemElem, ItemProp* pItemProp, CEditStrin
 
 	pEdit->AddString(stredit, dwColorbuf, ESSTY_BOLD);
 
+#ifdef __WEAPON_RARITY
+	}
+#endif // __WEAPON_RARITY
 	return dwColorbuf;
 }
 
@@ -2535,6 +2581,23 @@ void CWndMgr::PutItemAbilityPiercing(CItemElem* pItemElem, ItemProp* pItemProp, 
 	if (pItemElem->GetAbilityOption())
 	{
 		strTemp.Format(" %+d", pItemElem->GetAbilityOption());
+#ifdef __WEAPON_RARITY
+		if (pItemElem->m_nWeaponRarity > 0)
+		{
+			DWORD dwRarityColor = 0xff199bd5;
+			if (pItemElem->m_nWeaponRarity == 5)
+				dwRarityColor = 0xffb28a33;
+			else if (pItemElem->m_nWeaponRarity == 4)
+				dwRarityColor = 0xff8847ff;
+			else if (pItemElem->m_nWeaponRarity == 3)
+				dwRarityColor = 0xff4b69ff;
+			else if (pItemElem->m_nWeaponRarity == 2)
+				dwRarityColor = 0xff5e98d9;
+
+			pEdit->AddString(strTemp, dwRarityColor, ESSTY_BOLD);
+		}
+		else
+#endif // __WEAPON_RARITY
 		pEdit->AddString(strTemp, dwColorBuf, ESSTY_BOLD);
 	}
 
@@ -2556,7 +2619,7 @@ void CWndMgr::PutItemResist(CItemElem* pItemElem, ItemProp* pItemProp, CEditStri
 	CString str;
 	CString strTemp;
 	DWORD dwResistColor = dwItemColor.dwResist;
-	str = "Element: ";
+	str = "Element:ï¿½";
 	switch (pItemElem->m_bItemResist)
 	{
 	case SAI79::FIRE:
@@ -2963,6 +3026,75 @@ void CWndMgr::PutItemMinMax(CMover* pMover, CItemElem* pItemElem, ItemProp* pIte
 			}
 		}
 		pEdit->AddString(strTemp, dwColorMinMax);
+		#ifdef __WEAPON_RARITY
+		if (pItemElem->m_nWeaponRarity > 0)
+		{
+			DWORD dwRarityColor = 0xff199bd5;
+			switch (pItemElem->m_nWeaponRarity)
+			{
+			case 5:
+			{
+				nMin = (int)(nMin * 0.25f);
+				nMax = (int)(nMax * 0.25f);
+				dwRarityColor = 0xffb28a33;
+			}
+			break;
+			case 4:
+			{
+				nMin = (int)(nMin * 0.2f);
+				nMax = (int)(nMax * 0.2f);
+				dwRarityColor = 0xff8847ff;
+			}
+			break;
+			case 3:
+			{
+				nMin = (int)(nMin * 0.15f);
+				nMax = (int)(nMax * 0.15f);
+				dwRarityColor = 0xff4b69ff;
+			}
+			break;
+			case 2:
+			{
+				nMin = (int)(nMin * 0.1f);
+				nMax = (int)(nMax * 0.1f);
+				dwRarityColor = 0xff5e98d9;
+			}
+			break;
+			case 1:
+			{
+				nMin = (int)(nMin * 0.05f);
+				nMax = (int)(nMax * 0.05f);
+			}
+			break;
+			}
+
+			if (nMin < 1 && nMax > 0)
+				strTemp.Format(" + (1 ~ %d)", nMax);
+			else if (nMin > 0 && nMax < 1)
+				strTemp.Format(" + (%d ~ 1)", nMin);
+			else if (nMin < 1 && nMax < 1)
+				strTemp.Format(" + (1 ~ 1)");
+			else
+				strTemp.Format(" + (%d ~ %d)", nMin, nMax);
+			pEdit->AddString(strTemp, dwRarityColor);
+
+			CString strAllStats;
+        int nFlatBonus = 0;
+        switch (pItemElem->m_nWeaponRarity)
+        {
+            case 5: nFlatBonus = 50; break;
+            case 4: nFlatBonus = 40; break;
+            case 3: nFlatBonus = 30; break;
+            case 2: nFlatBonus = 20; break;
+            case 1: nFlatBonus = 10; break;
+        }
+        if (nFlatBonus > 0)
+        {
+            strAllStats.Format("\nAll Stats +%d", nFlatBonus);
+            pEdit->AddString(strAllStats, dwRarityColor, ESSTY_BOLD);
+        }
+		}
+#endif // __WEAPON_RARITY
 	}
 }
 void CWndMgr::PutBaseItemOpt(CItemElem* pItemElem, ItemProp* pItemProp, CEditString* pEdit)
@@ -4287,7 +4419,7 @@ BOOL CWndMgr::LoadRegInfo(LPCTSTR lpszFileName)
 	return bResult;
 }
 
-BOOL CWndMgr::PutDestParam(ItemProp* pItemProp, AddSkillProp* pAddSkillProp, CEditString* pEdit)
+BOOL CWndMgr::PutDestParam(ItemProp* pItemProp, AddSkillProp* pAddSkillProp, CEditString* pEdit, CItemElem* pItemElem)
 {
 	if (!pItemProp && !pAddSkillProp)
 		return FALSE;
@@ -4304,6 +4436,8 @@ BOOL CWndMgr::PutDestParam(ItemProp* pItemProp, AddSkillProp* pAddSkillProp, CEd
 	DWORD dwParam;
 	int nValue;
 	BOOL bFirstString = TRUE;
+
+	DWORD dwTextColor = 0xff0000ff;
 
 	for (int i = 0; i < nBonuses; i++)
 	{
@@ -4333,6 +4467,84 @@ BOOL CWndMgr::PutDestParam(ItemProp* pItemProp, AddSkillProp* pAddSkillProp, CEd
 		}
 		else
 			strTemp.Format("\n%s %s%d", FindDstString(dwParam), strSignAdj, nValue);
+		#ifdef __WEAPON_RARITY
+		if (pItemElem && pItemProp)
+		{
+			if (pItemElem->m_nWeaponRarity > 0 && IsValidRarityItem(pItemProp->dwItemKind3))
+			{
+				CString str;
+
+				float fFactor = 0.0f;
+				DWORD dwRarityColor = 0xff199bd5;
+				if (pItemElem->m_nWeaponRarity == 5)
+				{
+					dwRarityColor = 0xffb28a33;
+					fFactor = 0.25f;
+				}
+				else if (pItemElem->m_nWeaponRarity == 4)
+				{
+					dwRarityColor = 0xff8847ff;
+					fFactor = 0.2f;
+				}
+				else if (pItemElem->m_nWeaponRarity == 3)
+				{
+					dwRarityColor = 0xff4b69ff;
+					fFactor = 0.15f;
+				}
+				else if (pItemElem->m_nWeaponRarity == 2)
+				{
+					dwRarityColor = 0xff5e98d9;
+					fFactor = 0.1f;
+				}
+				else
+					fFactor = 0.05f;
+
+				if (pItemProp->dwDestParam[i] != 0xffffffff)
+				{
+					int nStat = 0;
+					if (pItemProp->dwDestParam[i] == DST_STAT_ALLUP)
+					{
+						nStat = (int)(pItemProp->nAdjParamVal[i] * fFactor);
+						str.Format(" (%+d)", nStat);
+						strTemp += str;
+						str.Format(" (%+d)", nStat);
+						strTemp += str;
+						str.Format(" (%+d)", nStat);
+						strTemp += str;
+						str.Format(" (%+d)", nStat);
+						strTemp += str;
+					}
+					else
+					{
+						int nDst = (int)pItemProp->dwDestParam[i];
+						if (IsDst_Rate(nDst))
+						{
+							if (nDst == DST_ATTACKSPEED)
+							{
+								nStat = (int)((pItemProp->nAdjParamVal[i] / 2 / 10) * fFactor);
+								str.Format(" (%+d%%)", nStat);
+								strTemp += str;
+							}
+							else
+							{
+								nStat = (int)(pItemProp->nAdjParamVal[i] * fFactor);
+								str.Format(" (%+d%%)", nStat);
+								strTemp += str;
+							}
+						}
+						else
+						{
+							nStat = (int)(pItemProp->nAdjParamVal[i] * fFactor);
+							str.Format(" (%+d)", nStat);
+							strTemp += str;
+						}
+					}
+
+					dwTextColor = dwRarityColor;
+				}
+			}
+		}
+#endif // __WEAPON_RARITY
 
 		pEdit->AddString(strTemp, 0xff0000ff);
 	}

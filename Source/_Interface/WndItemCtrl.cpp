@@ -418,6 +418,27 @@ void CWndItemCtrl::OnDraw(C2DRender* p2DRender)
 				else
 					RanderIcon(p2DRender, pItemElem, x * 32, y * 32, nParent);
 			}
+#ifdef __WEAPON_RARITY
+			CTexture* EdgeTexture;
+			if (pItemElem->m_nWeaponRarity > 0)
+			{
+				if (pItemElem->m_nWeaponRarity == 1)
+					EdgeTexture = m_textureMng.AddTexture(D3DDEVICE, MakePath(DIR_ITEM, "Item_Rarity1.png"), 0xffff00ff);
+				else if (pItemElem->m_nWeaponRarity == 2)
+					EdgeTexture = m_textureMng.AddTexture(D3DDEVICE, MakePath(DIR_ITEM, "Item_Rarity2.png"), 0xffff00ff);
+				else if (pItemElem->m_nWeaponRarity == 3)
+					EdgeTexture = m_textureMng.AddTexture(D3DDEVICE, MakePath(DIR_ITEM, "Item_Rarity3.png"), 0xffff00ff);
+				else if (pItemElem->m_nWeaponRarity == 4)
+					EdgeTexture = m_textureMng.AddTexture(D3DDEVICE, MakePath(DIR_ITEM, "Item_Rarity4.png"), 0xffff00ff);
+				else if (pItemElem->m_nWeaponRarity == 5)
+					EdgeTexture = m_textureMng.AddTexture(D3DDEVICE, MakePath(DIR_ITEM, "Item_Rarity5.png"), 0xffff00ff);
+
+				if (EdgeTexture)
+					//EdgeTexture->Render(p2DRender, CPoint(x * 32, (y * 34)), 255);
+					EdgeTexture->Render(p2DRender, CPoint(x * 32, y * 32), 255);
+
+			}
+#endif // __WEAPON_RARITY
 
 
 			if (pItemElem->GetProp()->dwPackMax > 1 && nParent != APP_SHOP_)

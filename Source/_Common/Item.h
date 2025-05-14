@@ -116,6 +116,10 @@ public:
 	void		SelectNewRandomOption() { m_iRandomOptItemId = ((m_iRandomOptItemId & 0xC0000000000000FF) | m_n64NewRandomOption); }
 	bool		SelectRandomOption(BYTE bySelectFlag);
 
+	#ifdef __WEAPON_RARITY
+	short		m_nWeaponRarity;
+	#endif // __WEAPON_RARITY
+
 	BOOL	IsPerin(void) { return m_dwItemId == II_SYS_SYS_SCR_PERIN; }
 	BOOL	IsCollector(BOOL bRefinable = FALSE) { return(m_dwItemId == II_GEN_TOO_COL_NORMAL || (!bRefinable && m_dwItemId == II_GEN_TOO_COL_EVENT)); }
 	BOOL	IsAccessory(void) { return CAccessoryProperty::GetInstance()->IsAccessory(m_dwItemId); }
@@ -888,6 +892,11 @@ public:
 extern BOOL IsUsableItem(CItemElem* pItem);
 extern BOOL IsUsingItem(CItemElem* pItem);
 extern BOOL IsNeedTarget(ItemProp* pProp);
+
+#ifdef __WEAPON_RARITY
+extern BOOL IsValidRarityItem(DWORD dwIdIk3);
+extern BOOL IsValidRarityItem2(DWORD dwIdIk3);
+#endif // __WEAPON_RARITY
 
 #endif // !defined(AFX_ITEM_H__80E88B36_BD6B_449B_BE76_34F2B5B77552__INCLUDED_)
 

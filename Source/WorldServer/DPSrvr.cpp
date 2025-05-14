@@ -3716,6 +3716,15 @@ void CDPSrvr::OnDoUseItemTarget(CAr& ar, DPID dpidCache, DPID dpidUser, LPBYTE l
 
 		break;
 #endif
+
+#ifdef __WEAPON_RARITY
+		case II_SYS_SYS_SCR_RARITY:
+			b = DoUseItemTarget_Rarity(pUser, pMaterial, pTarget);
+			break;
+		case II_SYS_SYS_SCR_RARITY1:
+			b = DoUseItemTarget_Rarity(pUser, pMaterial, pTarget, TRUE);
+			break;
+#endif // __WEAPON_RARITY
 	default:
 		break;
 	}
@@ -7469,7 +7478,7 @@ void CDPSrvr::OnTeleportToHeavenTower(CAr& ar, DPID dpidCache, DPID dpidUser, LP
 		break;
 
 	default:
-		Error("CDPSrvr::OnTeleportToHeavenTower() - Àß¸øµÈ Ãþ : %d, Name = %s", nFloor, pUser->GetName());
+		Error("CDPSrvr::OnTeleportToHeavenTower() - ï¿½ß¸ï¿½ï¿½ï¿½ ï¿½ï¿½ : %d, Name = %s", nFloor, pUser->GetName());
 		return;
 	}
 
@@ -9320,6 +9329,104 @@ void CDPSrvr::OnRecycle(CAr& ar, DPID dpidCache, DPID dpidUser, LPBYTE lpBuf, u_
 		pUser->AddDefinedText(TID_GAME_LACKSPACE);
 }
 #endif
+
+#ifdef __WEAPON_RARITY
+BOOL CDPSrvr::DoUseItemTarget_Rarity(CUser* pUser, CItemElem* pMaterial, CItemElem* pTarget, BOOL bCheck)
+{
+	ItemProp* pProp = pTarget->GetProp();
+	if (pProp)
+	{
+		if (!pMaterial || !pTarget)
+			return FALSE;
+
+		if (pUser->IsUsing(pTarget))
+			return FALSE;
+
+		if (IsValidRarityItem(pProp->dwItemKind3) || IsValidRarityItem2(pProp->dwItemKind3))
+		{
+			int nRandom = xRandom(0, 10000);
+			if (bCheck)
+			{
+				int nRarity = 1;
+				if (nRandom <= 1)
+				{
+					pUser->AddText("Success! You got Legendary!");
+					nRarity = 5;
+				}
+				else if (nRandom <= 10)
+				{
+					pUser->AddText("Success! You got Mythical!");
+					nRarity = 4;
+				}
+				else if (nRandom <= 30)
+				{
+					pUser->AddText("Success! You got Rare!");
+					nRarity = 3;
+				}
+				else if (nRandom <= 40)
+				{
+					pUser->AddText("Success! You got Uncommon!");
+					nRarity = 2;
+				}
+				else
+					pUser->AddText("Success! You got Common!");
+
+				pUser->UpdateItem((BYTE)pTarget->m_dwObjId, UI_WEAPONRARITY, nRarity);
+
+				return TRUE;
+			}
+			else
+			{
+				if (pTarget->m_nWeaponRarity >= 5)
+					pUser->AddText("The maximum rarity has already been reached.");
+				else if (pTarget->m_nWeaponRarity < 0)
+					pUser->AddText("Invalid Item!");
+				else
+				{
+					int nChance = 0;
+					switch (pTarget->m_nWeaponRarity)
+					{
+					case 1:
+						nChance = 550;
+						break;
+					case 2:
+						nChance = 80;
+						break;
+					case 3:
+						nChance = 35;
+						break;
+					case 4:
+						nChance = 20;
+						break;
+					}
+
+					if (nRandom < nChance)
+					{
+						pUser->AddText("Success!");
+						pUser->UpdateItem((BYTE)pTarget->m_dwObjId, UI_WEAPONRARITY, pTarget->m_nWeaponRarity + 1);
+						return TRUE;
+					}
+					else
+					{
+						pUser->AddText("Fail!");
+
+						pUser->AddPlaySound(SND_INF_UPGRADEFAIL);
+						if ((pUser->IsMode(TRANSPARENT_MODE)) == 0)
+							g_UserMng.AddCreateSfxObj((CMover*)pUser, XI_INT_FAIL, pUser->GetPos().x, pUser->GetPos().y, pUser->GetPos().z);
+						PutItemLog(pUser, "u", "OnDoUseItemTarget", pMaterial);
+						pUser->UpdateItem((BYTE)(pMaterial->m_dwObjId), UI_NUM, pMaterial->m_nItemNum - 1);
+						return FALSE;
+					}
+				}
+			}
+		}
+		else
+			pUser->AddText("Invalid Item!");
+	}
+
+	return FALSE;
+}
+#endif // __WEAPON_RARITY
 
 #ifdef __FL_PARTY_FINDER
 void CDPSrvr::OnPartyFinderRequest(CAr& ar, DPID dpidCache, DPID dpidUser, LPBYTE lpBuf, u_long uBufSize)

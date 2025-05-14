@@ -61,6 +61,9 @@ void CItemElem::Serialize( CAr & ar )
 #ifdef __MODEL_CHANGE
 		ar << m_dwLookId;
 #endif 
+#ifdef __WEAPON_RARITY
+		ar << m_nWeaponRarity;
+#endif // __WEAPON_RARITY
 	}
 	else
 	{
@@ -113,6 +116,9 @@ void CItemElem::Serialize( CAr & ar )
 #ifdef __MODEL_CHANGE
 		ar >> m_dwLookId;
 #endif
+#ifdef __WEAPON_RARITY
+		ar >> m_nWeaponRarity;
+#endif // __WEAPON_RARITY
 
 #ifdef __CLIENT
 		SetTexture();

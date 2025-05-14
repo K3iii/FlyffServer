@@ -1326,6 +1326,91 @@ void CMover::SetDestParamEquip(ItemProp* pItemProp, CItemElem* pItemElem, BOOL b
 #ifdef __WORLDSERVER
 	RunItemScript(this, pItemProp->dwID, ITEM_OP_EQUIP, NULL);
 #endif // __WORLDSERVER
+#ifdef __WEAPON_RARITY
+	// if (pItemElem && (IsValidRarityItem(pItemElem->GetProp()->dwItemKind3)))
+	// {
+	// 	float fFactor = 0.0f;
+	// 	int nFlatBonus = 0;
+	// 	if (pItemElem->m_nWeaponRarity > 0)
+	// 	{
+	// 		switch (pItemElem->m_nWeaponRarity)
+	// 		{
+	// 			case 5: fFactor = 0.25f; nFlatBonus = 50; 
+	// 					if(pItemProp->dwItemKind3 == IK3_SUIT)
+	// 						SetDestParam(DST_HP_MAX_RATE, 50, NULL_CHGPARAM);
+	// 					break; // Legendary
+    //             case 4: fFactor = 0.2f;  nFlatBonus = 40; break; // Epic
+    //             case 3: fFactor = 0.15f; nFlatBonus = 30; break; // Unique
+    //             case 2: fFactor = 0.1f;  nFlatBonus = 20; break; // Rare
+    //             case 1: fFactor = 0.05f; nFlatBonus = 10; break; // Common
+	// 		}
+
+	// 		// Apply general bonuses
+	// 		for (int i = 0; i < PROP_BONUSES; i++)
+	// 		{
+	// 			if (pItemProp->dwDestParam[i] != -1)
+	// 			{
+	// 				int nStats = (int)((pItemElem->GetProp()->nAdjParamVal[i]) * fFactor);
+	// 				if (nStats > 0)
+	// 					SetDestParam(pItemElem->GetProp()->dwDestParam[i], nStats, NULL_CHGPARAM);
+	// 			}
+	// 		}
+
+	// 		// Apply additional attribute bonuses
+	// 		 int nTotalBonus = nFlatBonus; // You can add scaling here if you want
+
+    //         // If you want to add scaling based on something, e.g. weapon level, add to nTotalBonus
+	// 		#ifdef __WORLDSERVER
+	// 		WriteLog("Applying flat bonus: %s, rarity=%d, STR+%d", pItemProp->szName, pItemElem->m_nWeaponRarity, nTotalBonus);
+	// 		#endif
+    //         // Apply to all stats at once, like DST_STAT_ALLUP
+    //         SetDestParam(DST_STR, nTotalBonus, NULL_CHGPARAM);
+    //         SetDestParam(DST_DEX, nTotalBonus, NULL_CHGPARAM);
+    //         SetDestParam(DST_STA, nTotalBonus, NULL_CHGPARAM);
+    //         SetDestParam(DST_INT, nTotalBonus, NULL_CHGPARAM);
+	// 	}
+	// }
+	if (pItemElem && (IsValidRarityItem(pItemElem->GetProp()->dwItemKind3)|| IsValidRarityItem2(pItemElem->GetProp()->dwItemKind3)))
+	{
+		float fFactor = 0.0f;
+		int nFlatBonus = 0;
+		if (pItemElem->m_nWeaponRarity > 0)
+		{
+			switch (pItemElem->m_nWeaponRarity)
+			{
+				case 5: fFactor = 0.25f; nFlatBonus = 50; break; // Legendary
+                case 4: fFactor = 0.2f;  nFlatBonus = 40; break; // Epic
+                case 3: fFactor = 0.15f; nFlatBonus = 30; break; // Unique
+                case 2: fFactor = 0.1f;  nFlatBonus = 20; break; // Rare
+                case 1: fFactor = 0.05f; nFlatBonus = 10; break; // Common
+			}
+
+			// Apply general bonuses
+			for (int i = 0; i < PROP_BONUSES; i++)
+			{
+				if (pItemProp->dwDestParam[i] != -1)
+				{
+					int nStats = (int)((pItemElem->GetProp()->nAdjParamVal[i]) * fFactor);
+					if (nStats > 0)
+						SetDestParam(pItemElem->GetProp()->dwDestParam[i], nStats, NULL_CHGPARAM);
+				}
+			}
+
+			// Apply additional attribute bonuses
+			 int nTotalBonus = nFlatBonus; // You can add scaling here if you want
+
+            // If you want to add scaling based on something, e.g. weapon level, add to nTotalBonus
+#ifdef __WORLDSERVER
+WriteLog("Applying flat bonus: %s, rarity=%d, STR+%d", pItemProp->szName, pItemElem->m_nWeaponRarity, nTotalBonus);
+#endif
+            // Apply to all stats at once, like DST_STAT_ALLUP
+            SetDestParam(DST_STR, nTotalBonus, NULL_CHGPARAM);
+            SetDestParam(DST_DEX, nTotalBonus, NULL_CHGPARAM);
+            SetDestParam(DST_STA, nTotalBonus, NULL_CHGPARAM);
+            SetDestParam(DST_INT, nTotalBonus, NULL_CHGPARAM);
+		}
+	}
+#endif // __WEAPON_RARITY
 
 	for (int i = 0; i < PROP_BONUSES; i++)
 	{
@@ -1378,6 +1463,78 @@ void CMover::ResetDestParamEquip(ItemProp* pItemProp, CItemElem* pItemElem)
 #ifdef __WORLDSERVER
 	RunItemScript(this, pItemProp->dwID, ITEM_OP_UNEQUIP, NULL);
 #endif // __WORLDSERVER
+
+#ifdef __WEAPON_RARITY
+	// if (pItemElem && (IsValidRarityItem(pItemElem->GetProp()->dwItemKind3)))
+	// {
+	// 	float fFactor = 0.0f;
+	// 	int nFlatBonus = 0;
+	// 	if (pItemElem->m_nWeaponRarity > 0)
+	// 	{
+	// 		switch (pItemElem->m_nWeaponRarity)
+	// 		{
+	// 			case 5: fFactor = 0.25f; nFlatBonus = 50; 
+	// 					if(pItemProp->dwItemKind3 == IK3_ARMOR)
+	// 						ResetDestParam(DST_HP_MAX_RATE, 50);
+	// 					break; // Legendary
+    //             case 4: fFactor = 0.2f;  nFlatBonus = 40; break; // Epic
+    //             case 3: fFactor = 0.15f; nFlatBonus = 30; break; // Unique
+    //             case 2: fFactor = 0.1f;  nFlatBonus = 20; break; // Rare
+    //             case 1: fFactor = 0.05f; nFlatBonus = 10; break; // Common
+	// 		}
+
+	// 		for (int i = 0; i < PROP_BONUSES; i++)
+	// 		{
+	// 			if (pItemProp->dwDestParam[i] != -1)
+	// 			{
+	// 				int nStats = (int)((pItemElem->GetProp()->nAdjParamVal[i]) * fFactor);
+	// 				if (nStats > 0)
+	// 					ResetDestParam(pItemElem->GetProp()->dwDestParam[i], nStats);
+	// 			}
+	// 		}
+
+	// 		int nTotalBonus = nFlatBonus;
+
+    //         ResetDestParam(DST_STR, nTotalBonus);
+    //         ResetDestParam(DST_DEX, nTotalBonus);
+    //         ResetDestParam(DST_STA, nTotalBonus);
+    //         ResetDestParam(DST_INT, nTotalBonus);
+	// 	}
+	// }
+	if (pItemElem && (IsValidRarityItem(pItemElem->GetProp()->dwItemKind3) || IsValidRarityItem2(pItemElem->GetProp()->dwItemKind3)))
+	{
+		float fFactor = 0.0f;
+		int nFlatBonus = 0;
+		if (pItemElem->m_nWeaponRarity > 0)
+		{
+			switch (pItemElem->m_nWeaponRarity)
+			{
+				case 5: fFactor = 0.25f; nFlatBonus = 50; break; // Legendary
+                case 4: fFactor = 0.2f;  nFlatBonus = 40; break; // Epic
+                case 3: fFactor = 0.15f; nFlatBonus = 30; break; // Unique
+                case 2: fFactor = 0.1f;  nFlatBonus = 20; break; // Rare
+                case 1: fFactor = 0.05f; nFlatBonus = 10; break; // Common
+			}
+
+			for (int i = 0; i < PROP_BONUSES; i++)
+			{
+				if (pItemProp->dwDestParam[i] != -1)
+				{
+					int nStats = (int)((pItemElem->GetProp()->nAdjParamVal[i]) * fFactor);
+					if (nStats > 0)
+						ResetDestParam(pItemElem->GetProp()->dwDestParam[i], nStats);
+				}
+			}
+
+			int nTotalBonus = nFlatBonus;
+
+            ResetDestParam(DST_STR, nTotalBonus);
+            ResetDestParam(DST_DEX, nTotalBonus);
+            ResetDestParam(DST_STA, nTotalBonus);
+            ResetDestParam(DST_INT, nTotalBonus);
+		}
+	}
+#endif // __WEAPON_RARITY
 
 	for (int i = 0; i < PROP_BONUSES; i++)
 	{

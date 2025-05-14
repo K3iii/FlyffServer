@@ -3944,6 +3944,42 @@ BOOL TextCmd_KillPlayer(CScanner& scanner)
 	return TRUE;
 }
 
+#ifdef __WEAPON_RARITY
+BOOL TextCmd_SetWeaponRarity(CScanner& scanner)
+{
+#ifdef __WORLDSERVER
+	CUser* pUser = (CUser*)scanner.dwValue;
+	if (IsValidObj(pUser))
+	{
+		int nRarity = scanner.GetNumber();
+		if (pUser->IsAuthHigher(AUTH_ADMINISTRATOR))
+		{
+			CItemElem* pItemElem = pUser->m_Inventory.GetAt(0);
+			if (pItemElem)
+			{
+				ItemProp* pProp = pItemElem->GetProp();
+				if (pProp)
+				{
+					if (IsValidRarityItem(pProp->dwItemKind3) || IsValidRarityItem2(pProp->dwItemKind3))
+					{
+						if (nRarity > 5)
+							nRarity = 5;
+						if (nRarity < 1)
+							nRarity = 1;
+
+						pUser->UpdateItem((BYTE)pItemElem->m_dwObjId, UI_WEAPONRARITY, nRarity);
+					}
+					else
+						pUser->AddText("Invalid Item!");
+				}
+			}
+		}
+	}
+#endif // __WORLDSERVER
+	return TRUE;
+}
+#endif // __WEAPON_RARITY
+
 BOOL TextCmd_LevelPlayer(CScanner& scanner)
 {
 #ifdef __WORLDSERVER
@@ -4095,129 +4131,129 @@ BOOL TextCmd_OutAll(CScanner& scanner)
 
 BEGINE_TEXTCMDFUNC_MAP
 ////////////////////////////////////////////////// AUTH_GENERAL begin///////////////////////////////////////////////
-ON_TEXTCMDFUNC(TextCmd_whisper, "whisper", "w", "±Ó¼Ó¸»", "±Ó", TCM_SERVER, AUTH_GENERAL, "±Ó¼Ó¸» [/¸í·É ¾ÆÀÌµð ³»¿ë]")
-ON_TEXTCMDFUNC(TextCmd_say, "say", "say", "¸»", "¸»", TCM_SERVER, AUTH_GENERAL, "¼Ó»èÀÓ [/¸í·É ¾ÆÀÌµð ³»¿ë]")
-ON_TEXTCMDFUNC(TextCmd_Position, "position", "pos", "ÁÂÇ¥", "ÁÂÇ¥", TCM_CLIENT, AUTH_GENERAL, "ÇöÀç ÁÂÇ¥¸¦ Ãâ·ÂÇØÁØ´Ù.")
-ON_TEXTCMDFUNC(TextCmd_shout, "shout", "s", "¿ÜÄ¡±â", "¿Ü", TCM_BOTH, AUTH_GENERAL, "¿ÜÄ¡±â [/¸í·É ¾ÆÀÌµð ³»¿ë]")
-ON_TEXTCMDFUNC(TextCmd_PartyChat, "partychat", "p", "±Ø´Ü¸»", "±Ø", TCM_BOTH, AUTH_GENERAL, "ÆÄÆ¼ Ã¤ÆÃ [/¸í·É ³»¿ë]")
-ON_TEXTCMDFUNC(TextCmd_Time, "Time", "ti", "½Ã°£", "½Ã", TCM_CLIENT, AUTH_GENERAL, "½Ã°£ º¸±â [/½Ã°£]")
+ON_TEXTCMDFUNC(TextCmd_whisper, "whisper", "w", "ï¿½Ó¼Ó¸ï¿½", "ï¿½ï¿½", TCM_SERVER, AUTH_GENERAL, "ï¿½Ó¼Ó¸ï¿½ [/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½]")
+ON_TEXTCMDFUNC(TextCmd_say, "say", "say", "ï¿½ï¿½", "ï¿½ï¿½", TCM_SERVER, AUTH_GENERAL, "ï¿½Ó»ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½]")
+ON_TEXTCMDFUNC(TextCmd_Position, "position", "pos", "ï¿½ï¿½Ç¥", "ï¿½ï¿½Ç¥", TCM_CLIENT, AUTH_GENERAL, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½.")
+ON_TEXTCMDFUNC(TextCmd_shout, "shout", "s", "ï¿½ï¿½Ä¡ï¿½ï¿½", "ï¿½ï¿½", TCM_BOTH, AUTH_GENERAL, "ï¿½ï¿½Ä¡ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½]")
+ON_TEXTCMDFUNC(TextCmd_PartyChat, "partychat", "p", "ï¿½Ø´Ü¸ï¿½", "ï¿½ï¿½", TCM_BOTH, AUTH_GENERAL, "ï¿½ï¿½Æ¼ Ã¤ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½]")
+ON_TEXTCMDFUNC(TextCmd_Time, "Time", "ti", "ï¿½Ã°ï¿½", "ï¿½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ [/ï¿½Ã°ï¿½]")
 
-ON_TEXTCMDFUNC(TextCmd_GuildChat, "GuildChat", "g", "±æµå¸»", "±æ¸»", TCM_BOTH, AUTH_GENERAL, "±æµå¸»")
-ON_TEXTCMDFUNC(TextCmd_PartyInvite, "PartyInvite", "partyinvite", "±Ø´ÜÃÊÃ»", "±ØÃÊ", TCM_SERVER, AUTH_GENERAL, "±Ø´Ü ÃÊÃ»")
-ON_TEXTCMDFUNC(TextCmd_GuildInvite, "GuildInvite", "guildinvite", "±æµåÃÊÃ»", "±æÃÊ", TCM_SERVER, AUTH_GENERAL, "±æµå ÃÊÃ»")
+ON_TEXTCMDFUNC(TextCmd_GuildChat, "GuildChat", "g", "ï¿½ï¿½å¸»", "ï¿½æ¸»", TCM_BOTH, AUTH_GENERAL, "ï¿½ï¿½å¸»")
+ON_TEXTCMDFUNC(TextCmd_PartyInvite, "PartyInvite", "partyinvite", "ï¿½Ø´ï¿½ï¿½ï¿½Ã»", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GENERAL, "ï¿½Ø´ï¿½ ï¿½ï¿½Ã»")
+ON_TEXTCMDFUNC(TextCmd_GuildInvite, "GuildInvite", "guildinvite", "ï¿½ï¿½ï¿½ï¿½ï¿½Ã»", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GENERAL, "ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»")
 #ifdef __CLIENT
-ON_TEXTCMDFUNC(TextCmd_tradeagree, "tradeagree", "ta", "°Å·¡½ÂÀÎ", "°Å½Â", TCM_CLIENT, AUTH_GENERAL, "°Å·¡ ½ÂÀÎ [/¸í·É] ")
-ON_TEXTCMDFUNC(TextCmd_traderefuse, "traderefuse", "tr", "°Å·¡°ÅÀý", "°ÅÀý", TCM_CLIENT, AUTH_GENERAL, "°Å·¡ °ÅÀý [/¸í·É] ")
-ON_TEXTCMDFUNC(TextCmd_whisperagree, "whisperagree", "wa", "±Ó¼Ó¸»½ÂÀÎ", "±Ó½Â", TCM_CLIENT, AUTH_GENERAL, "±Ó¼Ó¸» ½ÂÀÎ [/¸í·É] ")
-ON_TEXTCMDFUNC(TextCmd_whisperrefuse, "whisperrefuse", "wr", "±Ó¼Ó¸»°ÅÀý", "±ÓÀý", TCM_CLIENT, AUTH_GENERAL, "±Ó¼Ó¸» °ÅÀý [/¸í·É] ")
-ON_TEXTCMDFUNC(TextCmd_messengeragree, "messengeragree", "ma", "¸Þ½ÅÀú½ÂÀÎ", "¸Þ½Â", TCM_CLIENT, AUTH_GENERAL, "¸Þ½ÅÀú ½ÂÀÎ [/¸í·É] ")
-ON_TEXTCMDFUNC(TextCmd_messengerrefuse, "messengerrefuse", "mr", "¸Þ½ÅÀú°ÅÀý", "¸ÞÀý", TCM_CLIENT, AUTH_GENERAL, "¸Þ½ÅÀú °ÅÀý [/¸í·É] ")
-ON_TEXTCMDFUNC(TextCmd_stageagree, "stageagree", "ga", "±Ø´Ü½ÂÀÎ", "±Ø½Â", TCM_CLIENT, AUTH_GENERAL, "±Ø´Ü ½ÂÀÎ [/¸í·É] ")
-ON_TEXTCMDFUNC(TextCmd_stagerefuse, "stagerefuse", "gr", "±Ø´Ü°ÅÀý", "±ØÀý", TCM_CLIENT, AUTH_GENERAL, "±Ø´Ü °ÅÀý [/¸í·É] ")
-ON_TEXTCMDFUNC(TextCmd_connectagree, "connectagree", "ca", "Á¢¼Ó¾Ë¸²", "Á¢¾Ë", TCM_CLIENT, AUTH_GENERAL, "Á¢¼Ó¾Ë¸² [/¸í·É] ")
-ON_TEXTCMDFUNC(TextCmd_connectrefuse, "connectrefuse", "cr", "Á¢¼Ó¾Ë¸²ÇØÁ¦", "Á¢ÇØ", TCM_CLIENT, AUTH_GENERAL, "Á¢¼Ó¾Ë¸² ÇØÁ¦ [/¸í·É] ")
+ON_TEXTCMDFUNC(TextCmd_tradeagree, "tradeagree", "ta", "ï¿½Å·ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½Å½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½Å·ï¿½ ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½] ")
+ON_TEXTCMDFUNC(TextCmd_traderefuse, "traderefuse", "tr", "ï¿½Å·ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½Å·ï¿½ ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½] ")
+ON_TEXTCMDFUNC(TextCmd_whisperagree, "whisperagree", "wa", "ï¿½Ó¼Ó¸ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½Ó½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½Ó¼Ó¸ï¿½ ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½] ")
+ON_TEXTCMDFUNC(TextCmd_whisperrefuse, "whisperrefuse", "wr", "ï¿½Ó¼Ó¸ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½Ó¼Ó¸ï¿½ ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½] ")
+ON_TEXTCMDFUNC(TextCmd_messengeragree, "messengeragree", "ma", "ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½Þ½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½] ")
+ON_TEXTCMDFUNC(TextCmd_messengerrefuse, "messengerrefuse", "mr", "ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½] ")
+ON_TEXTCMDFUNC(TextCmd_stageagree, "stageagree", "ga", "ï¿½Ø´Ü½ï¿½ï¿½ï¿½", "ï¿½Ø½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½] ")
+ON_TEXTCMDFUNC(TextCmd_stagerefuse, "stagerefuse", "gr", "ï¿½Ø´Ü°ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½] ")
+ON_TEXTCMDFUNC(TextCmd_connectagree, "connectagree", "ca", "ï¿½ï¿½ï¿½Ó¾Ë¸ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½ï¿½ï¿½Ó¾Ë¸ï¿½ [/ï¿½ï¿½ï¿½ï¿½] ")
+ON_TEXTCMDFUNC(TextCmd_connectrefuse, "connectrefuse", "cr", "ï¿½ï¿½ï¿½Ó¾Ë¸ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_GENERAL, "ï¿½ï¿½ï¿½Ó¾Ë¸ï¿½ ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½] ")
 #ifdef __YS_CHATTING_BLOCKING_SYSTEM
-ON_TEXTCMDFUNC(TextCmd_BlockUser, "ignore", "ig", "Ã¤ÆÃÂ÷´Ü", "Ã¤Â÷", TCM_CLIENT, AUTH_GENERAL, "Ã¤ÆÃÂ÷´Ü [/¸í·É ¾ÆÀÌµð]")
-ON_TEXTCMDFUNC(TextCmd_CancelBlockedUser, "unignore", "uig", "Ã¤ÆÃÂ÷´ÜÇØÁ¦", "Ã¤Â÷ÇØ", TCM_CLIENT, AUTH_GENERAL, "Ã¤ÆÃÂ÷´ÜÇØÁ¦ [/¸í·É ¾ÆÀÌµð]")
-ON_TEXTCMDFUNC(TextCmd_IgnoreList, "ignorelist", "igl", "Ã¤ÆÃÂ÷´Ü¸ñ·Ï", "Ã¤Â÷¸ñ", TCM_CLIENT, AUTH_GENERAL, "Ã¤ÆÃ Â÷´Ü ¸ñ·Ï")
+ON_TEXTCMDFUNC(TextCmd_BlockUser, "ignore", "ig", "Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "Ã¤ï¿½ï¿½", TCM_CLIENT, AUTH_GENERAL, "Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½]")
+ON_TEXTCMDFUNC(TextCmd_CancelBlockedUser, "unignore", "uig", "Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "Ã¤ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_GENERAL, "Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ [/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½]")
+ON_TEXTCMDFUNC(TextCmd_IgnoreList, "ignorelist", "igl", "Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½Ü¸ï¿½ï¿½", "Ã¤ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_GENERAL, "Ã¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½")
 #endif // __YS_CHATTING_BLOCKING_SYSTEM
 #endif //__CLIENT
 ////////////////////////////////////////////////// AUTH_GENERAL end///////////////////////////////////////////////
 	// GM_LEVEL_1
-	ON_TEXTCMDFUNC(TextCmd_Teleport, "teleport", "te", "ÅÚ·¹Æ÷Æ®", "ÅÚ·¹", TCM_SERVER, AUTH_GAMEMASTER, "ÅÚ·¹Æ÷Æ®")
-	ON_TEXTCMDFUNC(TextCmd_Invisible, "invisible", "inv", "Åõ¸í", "Åõ¸í", TCM_SERVER, AUTH_GAMEMASTER, "Åõ¸íÈ­")
-	ON_TEXTCMDFUNC(TextCmd_NoInvisible, "noinvisible", "noinv", "Åõ¸íÇØÁ¦", "ÅõÇØ", TCM_SERVER, AUTH_GAMEMASTER, "Åõ¸íÈ­ ÇØÁ¦")
-	ON_TEXTCMDFUNC(TextCmd_Summon, "summon", "su", "¼ÒÈ¯", "¼ÒÈ¯", TCM_SERVER, AUTH_GAMEMASTER, "À¯Àú¼ÒÈ¯")
-	ON_TEXTCMDFUNC(TextCmd_count, "count", "cnt", "Á¢¼ÓÀÚ¼ö", "Á¢¼ÓÀÚ¼ö", TCM_SERVER, AUTH_GAMEMASTER, "Á¢¼ÓÀÚ Ä«¿îÆ®")
+	ON_TEXTCMDFUNC(TextCmd_Teleport, "teleport", "te", "ï¿½Ú·ï¿½ï¿½ï¿½Æ®", "ï¿½Ú·ï¿½", TCM_SERVER, AUTH_GAMEMASTER, "ï¿½Ú·ï¿½ï¿½ï¿½Æ®")
+	ON_TEXTCMDFUNC(TextCmd_Invisible, "invisible", "inv", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER, "ï¿½ï¿½ï¿½ï¿½È­")
+	ON_TEXTCMDFUNC(TextCmd_NoInvisible, "noinvisible", "noinv", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER, "ï¿½ï¿½ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Summon, "summon", "su", "ï¿½ï¿½È¯", "ï¿½ï¿½È¯", TCM_SERVER, AUTH_GAMEMASTER, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¯")
+	ON_TEXTCMDFUNC(TextCmd_count, "count", "cnt", "ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½", TCM_SERVER, AUTH_GAMEMASTER, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½Æ®")
 
 	// GM_LEVEL_2
-	ON_TEXTCMDFUNC(TextCmd_Out, "out", "out", "ÅðÃâ", "ÅðÃâ", TCM_SERVER, AUTH_GAMEMASTER2, "ÅðÃâ")
-	ON_TEXTCMDFUNC(TextCmd_Talk, "talk", "nota", "¸»ÇØÁ¦", "¸»ÇØ", TCM_SERVER, AUTH_GAMEMASTER2, "¸»ÇÏÁö ¸øÇÏ°Ô ÇÏ±â ÇØÁ¦")
-	ON_TEXTCMDFUNC(TextCmd_NoTalk, "notalk", "ta", "¸»Á¤Áö", "¸»Á¤", TCM_SERVER, AUTH_GAMEMASTER2, "¸»ÇÏÁö ¸øÇÏ°Ô ÇÏ±â")
-	ON_TEXTCMDFUNC(TextCmd_ip, "ip", "ip", "¾ÆÀÌÇÇ", "¾ÆÀÌÇÇ", TCM_BOTH, AUTH_GAMEMASTER2, "»ó´ë IP¾Ë±â")
+	ON_TEXTCMDFUNC(TextCmd_Out, "out", "out", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER2, "ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Talk, "talk", "nota", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER2, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_NoTalk, "notalk", "ta", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER2, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ï±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_ip, "ip", "ip", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_GAMEMASTER2, "ï¿½ï¿½ï¿½ IPï¿½Ë±ï¿½")
 #ifdef __JEFF_9_20
-	ON_TEXTCMDFUNC(TextCmd_Mute, "Mute", "mute", "Á¶¿ëÈ÷", "Á¶¿ëÈ÷", TCM_SERVER, AUTH_GAMEMASTER2, "")
+	ON_TEXTCMDFUNC(TextCmd_Mute, "Mute", "mute", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER2, "")
 #endif	// __JEFF_9_20
-	ON_TEXTCMDFUNC(TextCmd_FallSnow, "FallSnow", "fs", "´«¿Í¶ó", "´«¿Í", TCM_SERVER, AUTH_GAMEMASTER2, "´« ³»¸®±â Åä±Û")
-	ON_TEXTCMDFUNC(TextCmd_StopSnow, "StopSnow", "ss", "´«±×¸¸", "´«³¡", TCM_SERVER, AUTH_GAMEMASTER2, "´« ³»¸®±â ¸øÇÏ°Ô Åä±Û")
-	ON_TEXTCMDFUNC(TextCmd_FallRain, "FallRain", "frain", "ºñ¿Í¶ó", "ºñ¿Í", TCM_SERVER, AUTH_GAMEMASTER2, "ºñ ³»¸®±â Åä±Û")
-	ON_TEXTCMDFUNC(TextCmd_StopRain, "StopRain", "sr", "ºñ±×¸¸", "ºñ³¡", TCM_SERVER, AUTH_GAMEMASTER2, "ºñ ³»¸®±â ¸øÇÏ°Ô Åä±Û")
-	ON_TEXTCMDFUNC(TextCmd_System, "system", "sys", "¾Ë¸²", "¾Ë", TCM_SERVER, AUTH_GAMEMASTER2, "½Ã½ºÅÛ ¸Þ½ÃÁö")
+	ON_TEXTCMDFUNC(TextCmd_FallSnow, "FallSnow", "fs", "ï¿½ï¿½ï¿½Í¶ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER2, "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_StopSnow, "StopSnow", "ss", "ï¿½ï¿½ï¿½×¸ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER2, "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_FallRain, "FallRain", "frain", "ï¿½ï¿½Í¶ï¿½", "ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER2, "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_StopRain, "StopRain", "sr", "ï¿½ï¿½×¸ï¿½", "ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER2, "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_System, "system", "sys", "ï¿½Ë¸ï¿½", "ï¿½ï¿½", TCM_SERVER, AUTH_GAMEMASTER2, "ï¿½Ã½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½")
 
 	// GM_LEVEL_3
-	ON_TEXTCMDFUNC(TextCmd_Undying, "undying", "ud", "¹«Àû", "¹«", TCM_BOTH, AUTH_ADMINISTRATOR, "¹«Àû")
-	ON_TEXTCMDFUNC(TextCmd_Undying2, "undying2", "ud2", "¹Ý¹«Àû", "¹Ý¹«", TCM_BOTH, AUTH_ADMINISTRATOR, "¹Ý¹«Àû")
-	ON_TEXTCMDFUNC(TextCmd_NoUndying, "noundying", "noud", "¹«ÀûÇØÁ¦", "¹«ÇØ", TCM_BOTH, AUTH_ADMINISTRATOR, "¹«Àû ÇØÁ¦")
-	ON_TEXTCMDFUNC(TextCmd_Onekill, "onekill", "ok", "ÃÊÇÊ", "ÃÊÇÊ", TCM_BOTH, AUTH_ADMINISTRATOR, "ÀûÀ» ÇÑ¹æ¿¡ Á×ÀÌ±â")
-	ON_TEXTCMDFUNC(TextCmd_NoOnekill, "noonekill", "nook", "ÃÊÇÊÇØÁ¦", "ÃÊÇØ", TCM_BOTH, AUTH_ADMINISTRATOR, "ÀûÀ» ÇÑ¹æ¿¡ Á×ÀÌ±â ÇØÁ¦")
-	ON_TEXTCMDFUNC(TextCmd_AroundKill, "aroundkill", "ak", "¿ø¼¦", "¿ø", TCM_SERVER, AUTH_ADMINISTRATOR, "¾î¶ó¿îµå¿¡ ÀÖ´Â ¸ó½ºÅÍ Á×ÀÌ±â")
-	ON_TEXTCMDFUNC(TextCmd_Level, "level", "lv", "·¹º§", "·¾", TCM_SERVER, AUTH_ADMINISTRATOR, "·¹º§ ¼³Á¤ ÇÏ±â")
-	ON_TEXTCMDFUNC(TextCmd_SkillLevelAll, "skilllevelAll", "slvAll", "½ºÅ³·¹º§¿Ã", "½º·¾¿Ã", TCM_BOTH, AUTH_ADMINISTRATOR, "½ºÅ³·¹º§ ¼³Á¤ ÇÏ±â")
-	ON_TEXTCMDFUNC(TextCmd_BeginQuest, "BeginQuest", "bq", "Äù½ºÆ®½ÃÀÛ", "Äù½Ã", TCM_SERVER, AUTH_ADMINISTRATOR, "Äù½ºÆ® ½ÃÀÛ [ID]")
-	ON_TEXTCMDFUNC(TextCmd_EndQuest, "EndQuest", "eq", "Äù½ºÆ®Á¾·á", "ÄùÁ¾", TCM_SERVER, AUTH_ADMINISTRATOR, "Äù½ºÆ® Á¾·á [ID]")
-	ON_TEXTCMDFUNC(TextCmd_RemoveQuest, "RemoveQuest", "rq", "Äù½ºÆ®Á¦°Å", "ÄùÁ¦", TCM_SERVER, AUTH_ADMINISTRATOR, "Äù½ºÆ® Á¦°Å [ID]")
-	ON_TEXTCMDFUNC(TextCmd_RemoveAllQuest, "RemoveAllQuest", "raq", "Äù½ºÆ®ÀüÃ¼Á¦°Å", "ÄùÀüÁ¦", TCM_SERVER, AUTH_ADMINISTRATOR, "Äù½ºÆ® ÀüÃ¼ Á¦°Å")
-	ON_TEXTCMDFUNC(TextCmd_RemoveCompleteQuest, "RemoveCompleteQuest", "rcq", "Äù½ºÆ®¿Ï·áÁ¦°Å", "Äù¿ÏÁ¦", TCM_SERVER, AUTH_ADMINISTRATOR, "Äù½ºÆ® ¿Ï·á Á¦°Å")
-	ON_TEXTCMDFUNC(TextCmd_Freeze, "freeze", "fr", "Á¤Áö", "Á¤Áö", TCM_SERVER, AUTH_ADMINISTRATOR, "¿òÁ÷ÀÌÁö ¸øÇÏ°Ô ÇÏ±â")
-	ON_TEXTCMDFUNC(TextCmd_NoFreeze, "nofreeze", "nofr", "Á¤ÁöÇØÁ¦", "Á¤ÇØ", TCM_SERVER, AUTH_ADMINISTRATOR, "¿òÁ÷ÀÌÁö ¸øÇÏ°Ô ÇÏ±â ÇØÁ¦")
-	ON_TEXTCMDFUNC(TextCmd_PartyLevel, "PartyLevel", "plv", "±Ø´Ü·¹º§", "±Ø·¹", TCM_SERVER, AUTH_ADMINISTRATOR, "±Ø´Ü·¹º§ ¼³Á¤ ÇÏ±â")
-	ON_TEXTCMDFUNC(TextCmd_GuildStat, "GuildStat", "gstat", "±æµå½ºÅÈ", "±æ½ºÅÈ", TCM_SERVER, AUTH_ADMINISTRATOR, "±æµå ½ºÅÈº¯°æ")
-	ON_TEXTCMDFUNC(TextCmd_CreateGuild, "createguild", "cg", "±æµå»ý¼º", "±æ»ý", TCM_SERVER, AUTH_ADMINISTRATOR, "±æµå »ý¼º")
-	ON_TEXTCMDFUNC(TextCmd_DestroyGuild, "destroyguild", "dg", "±æµåÇØÃ¼", "±æÇØ", TCM_CLIENT, AUTH_ADMINISTRATOR, "±æµå ÇØÃ¼")
-	ON_TEXTCMDFUNC(TextCmd_GuildCombatIn, "GCIn", "gcin", "±æµå¿öÀÔÀå", "±æ¿öÀÔ", TCM_BOTH, AUTH_ADMINISTRATOR, "±æµå´ëÀü ÀÔÀå")
-	ON_TEXTCMDFUNC(TextCmd_GuildCombatOpen, "GCOpen", "gcopen", "±æµå¿ö¿ÀÇÂ", "±æ¿ö¿À", TCM_BOTH, AUTH_ADMINISTRATOR, "±æµå´ëÀü ¿ÀÇÂ")
-	ON_TEXTCMDFUNC(TextCmd_GuildCombatClose, "GCClose", "gcclose", "±æµå¿ö´Ý±â", "±æ¿ö´Ý", TCM_BOTH, AUTH_ADMINISTRATOR, "±æµå´ëÀü ´Ý±â")
-	ON_TEXTCMDFUNC(TextCmd_GuildCombatNext, "GCNext", "gcNext", "±æµå¿ö´ÙÀ½", "±æ¿ö´Ù", TCM_BOTH, AUTH_ADMINISTRATOR, "±æµå´ëÀü ´ÙÀ½")
-	ON_TEXTCMDFUNC(TextCmd_indirect, "indirect", "id", "°£Á¢", "°£Á¢", TCM_BOTH, AUTH_ADMINISTRATOR, "»ó´ë¿¡°Ô °£Á¢À¸·Î ¸»ÇÏ°Ô ÇÏ±â")
-	ON_TEXTCMDFUNC(TextCmd_CreateNPC, "createnpc", "cn", "¿£ÇÇ¾¾»ý¼º", "¿£»ý", TCM_SERVER, AUTH_ADMINISTRATOR, "npc»ý¼º")
+	ON_TEXTCMDFUNC(TextCmd_Undying, "undying", "ud", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Undying2, "undying2", "ud2", "ï¿½Ý¹ï¿½ï¿½ï¿½", "ï¿½Ý¹ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½Ý¹ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_NoUndying, "noundying", "noud", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Onekill, "onekill", "ok", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹æ¿¡ ï¿½ï¿½ï¿½Ì±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_NoOnekill, "noonekill", "nook", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹æ¿¡ ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_AroundKill, "aroundkill", "ak", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½å¿¡ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Level, "level", "lv", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_SkillLevelAll, "skilllevelAll", "slvAll", "ï¿½ï¿½Å³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½Å³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_BeginQuest, "BeginQuest", "bq", "ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ [ID]")
+	ON_TEXTCMDFUNC(TextCmd_EndQuest, "EndQuest", "eq", "ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ [ID]")
+	ON_TEXTCMDFUNC(TextCmd_RemoveQuest, "RemoveQuest", "rq", "ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ [ID]")
+	ON_TEXTCMDFUNC(TextCmd_RemoveAllQuest, "RemoveAllQuest", "raq", "ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_RemoveCompleteQuest, "RemoveCompleteQuest", "rcq", "ï¿½ï¿½ï¿½ï¿½Æ®ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Freeze, "freeze", "fr", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ï±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_NoFreeze, "nofreeze", "nofr", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_PartyLevel, "PartyLevel", "plv", "ï¿½Ø´Ü·ï¿½ï¿½ï¿½", "ï¿½Ø·ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½Ø´Ü·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_GuildStat, "GuildStat", "gstat", "ï¿½ï¿½å½ºï¿½ï¿½", "ï¿½æ½ºï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Èºï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_CreateGuild, "createguild", "cg", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_DestroyGuild, "destroyguild", "dg", "ï¿½ï¿½ï¿½ï¿½ï¿½Ã¼", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼")
+	ON_TEXTCMDFUNC(TextCmd_GuildCombatIn, "GCIn", "gcin", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_GuildCombatOpen, "GCOpen", "gcopen", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_GuildCombatClose, "GCClose", "gcclose", "ï¿½ï¿½ï¿½ï¿½ï¿½Ý±ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_GuildCombatNext, "GCNext", "gcNext", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_indirect, "indirect", "id", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ë¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ï±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_CreateNPC, "createnpc", "cn", "ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "npcï¿½ï¿½ï¿½ï¿½")
 #if __VER >= 9 // __EVENTLUA
-	ON_TEXTCMDFUNC(TextCmd_LuaEventList, "EVENTLIST", "eventlist", "ÀÌº¥Æ®¸ñ·Ï", "ÀÌº¥Æ®¸ñ·Ï", TCM_SERVER, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_LuaEventInfo, "EVENTINFO", "eventinfo", "ÀÌº¥Æ®Á¤º¸", "ÀÌº¥Æ®Á¤º¸", TCM_SERVER, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_LuaEventList, "EVENTLIST", "eventlist", "ï¿½Ìºï¿½Æ®ï¿½ï¿½ï¿½", "ï¿½Ìºï¿½Æ®ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_LuaEventInfo, "EVENTINFO", "eventinfo", "ï¿½Ìºï¿½Æ®ï¿½ï¿½ï¿½ï¿½", "ï¿½Ìºï¿½Æ®ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "")
 #endif	// __EVENTLUA
-	ON_TEXTCMDFUNC(TextCmd_GameSetting, "gamesetting", "gs", "°ÔÀÓ¼³Á¤", "°Ô¼³", TCM_SERVER, AUTH_ADMINISTRATOR, "°ÔÀÓ ¼³Á¤ º¸±â")
-	ON_TEXTCMDFUNC(TextCmd_RemoveNpc, "rmvnpc", "rn", "»èÁ¦", "»è", TCM_SERVER, AUTH_ADMINISTRATOR, "NPC»èÁ¦")
+	ON_TEXTCMDFUNC(TextCmd_GameSetting, "gamesetting", "gs", "ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½ï¿½", "ï¿½Ô¼ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_RemoveNpc, "rmvnpc", "rn", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "NPCï¿½ï¿½ï¿½ï¿½")
 
 	// GM_LEVEL_4
-	ON_TEXTCMDFUNC(TextCmd_Disguise, "disguise", "dis", "º¯½Å", "º¯", TCM_SERVER, AUTH_ADMINISTRATOR, "º¯½Å")
-	ON_TEXTCMDFUNC(TextCmd_NoDisguise, "noDisguise", "nodis", "º¯½ÅÇØÁ¦", "º¯ÇØ", TCM_SERVER, AUTH_ADMINISTRATOR, "º¯½Å ÇØÁ¦")
-	ON_TEXTCMDFUNC(TextCmd_ResistItem, "ResistItem", "ritem", "¼Ó¼º¾ÆÀÌÅÛ", "¼Ó¾Æ", TCM_BOTH, AUTH_ADMINISTRATOR, "¼Ó¼º¾ÆÀÌÅÛ")
-	ON_TEXTCMDFUNC(TextCmd_JobName, "jobname", "jn", "Á÷¾÷ÀÌ¸§", "Á÷ÀÌ", TCM_CLIENT, AUTH_ADMINISTRATOR, "Á÷¾÷ÀÌ¸§ º¸±â")
-	ON_TEXTCMDFUNC(TextCmd_GetGold, "getgold", "gg", "µ·Áà", "µ·", TCM_SERVER, AUTH_ADMINISTRATOR, "µ· ¾ò±â")
-	ON_TEXTCMDFUNC(TextCmd_CreateItem, "createitem", "ci", "¾ÆÀÌÅÛ»ý¼º", "¾Æ»ý", TCM_BOTH, AUTH_ADMINISTRATOR, "¾ÆÀÌÅÛ»ý¼º")
-	ON_TEXTCMDFUNC(TextCmd_CreateItem2, "createitem2", "ci2", "¾ÆÀÌÅÛ»ý¼º2", "¾Æ»ý2", TCM_SERVER, AUTH_ADMINISTRATOR, "¾ÆÀÌÅÛ»ý¼º2")
-	ON_TEXTCMDFUNC(TextCmd_QuestState, "QuestState", "qs", "Äù½ºÆ®»óÅÂ", "Äù»ó", TCM_SERVER, AUTH_ADMINISTRATOR, "Äù½ºÆ® ¼³Á¤ [ID] [State]")
-	ON_TEXTCMDFUNC(TextCmd_LoadScript, "loadscript", "loscr", "·Îµå½ºÅ©¸³Æ®", "·Î½º", TCM_BOTH, AUTH_ADMINISTRATOR, "½ºÅ©¸³Æ® ´Ù½Ã ÀÐ±â")
-	ON_TEXTCMDFUNC(TextCmd_ReloadConstant, "ReloadConstant", "rec", "¸®·ÎµåÄÜ½ºÅºÆ®", "¸®ÄÜ", TCM_SERVER, AUTH_ADMINISTRATOR, "¸®·Îµå ÄÜ½ºÅºÆ®ÆÄÀÏ")
-	ON_TEXTCMDFUNC(TextCmd_Piercing, "Piercing", "pier", "ÇÇ¾î½Ì", "ÇÇ½Ì", TCM_BOTH, AUTH_ADMINISTRATOR, "ÇÇ¾î½Ì(¼ÒÄÏ)")
+	ON_TEXTCMDFUNC(TextCmd_Disguise, "disguise", "dis", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_NoDisguise, "noDisguise", "nodis", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_ResistItem, "ResistItem", "ritem", "ï¿½Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½Ó¾ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_JobName, "jobname", "jn", "ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_GetGold, "getgold", "gg", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_CreateItem, "createitem", "ci", "ï¿½ï¿½ï¿½ï¿½ï¿½Û»ï¿½ï¿½ï¿½", "ï¿½Æ»ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½Û»ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_CreateItem2, "createitem2", "ci2", "ï¿½ï¿½ï¿½ï¿½ï¿½Û»ï¿½ï¿½ï¿½2", "ï¿½Æ»ï¿½2", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½Û»ï¿½ï¿½ï¿½2")
+	ON_TEXTCMDFUNC(TextCmd_QuestState, "QuestState", "qs", "ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ [ID] [State]")
+	ON_TEXTCMDFUNC(TextCmd_LoadScript, "loadscript", "loscr", "ï¿½Îµå½ºÅ©ï¿½ï¿½Æ®", "ï¿½Î½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½Å©ï¿½ï¿½Æ® ï¿½Ù½ï¿½ ï¿½Ð±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_ReloadConstant, "ReloadConstant", "rec", "ï¿½ï¿½ï¿½Îµï¿½ï¿½Ü½ï¿½ÅºÆ®", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½Îµï¿½ ï¿½Ü½ï¿½ÅºÆ®ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Piercing, "Piercing", "pier", "ï¿½Ç¾ï¿½ï¿½", "ï¿½Ç½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½Ç¾ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)")
 #if __VER >= 9	// __PET_0410
-	ON_TEXTCMDFUNC(TextCmd_PetLevel, "petlevel", "pl", "Æê·¹º§", "Æê·¹", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_PetExp, "petexp", "pe", "Æê°æÇèÄ¡", "Æê°æ", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_MakePetFeed, "makepetfeed", "mpf", "¸ÔÀÌ¸¸µé±â", "¸ÔÀÌ", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_Pet, "Pet", "pet", "Æê", "Æê", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_PetLevel, "petlevel", "pl", "ï¿½ê·¹ï¿½ï¿½", "ï¿½ê·¹", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_PetExp, "petexp", "pe", "ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡", "ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_MakePetFeed, "makepetfeed", "mpf", "ï¿½ï¿½ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_Pet, "Pet", "pet", "ï¿½ï¿½", "ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
 #endif	// __PET_0410
 #if __VER >= 9 // __EVENTLUA
-	ON_TEXTCMDFUNC(TextCmd_Lua, "Lua", "lua", "·ç¾Æ", "·ç¾Æ", TCM_SERVER, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_Lua, "Lua", "lua", "ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "")
 #endif	// __EVENTLUA
 #ifdef __PET_1024
-	ON_TEXTCMDFUNC(TextCmd_SetPetName, "SetPetName", "setpetname", "ÆêÀÛ¸í", "ÆêÀÛ", TCM_SERVER, AUTH_ADMINISTRATOR, "ÆêÀÛ¸í")
-	ON_TEXTCMDFUNC(TextCmd_ClearPetName, "ClearPetName", "cpn", "ÆêÀÛ¸íÃë¼Ò", "ÆêÀÛÃë", TCM_CLIENT, AUTH_ADMINISTRATOR, "ÆêÀÛ¸íÃë¼Ò")
+	ON_TEXTCMDFUNC(TextCmd_SetPetName, "SetPetName", "setpetname", "ï¿½ï¿½ï¿½Û¸ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½Û¸ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_ClearPetName, "ClearPetName", "cpn", "ï¿½ï¿½ï¿½Û¸ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½Û¸ï¿½ï¿½ï¿½ï¿½")
 #endif	// __PET_1024
 #if __VER >= 13 // __COUPLE_1117
-	ON_TEXTCMDFUNC(TextCmd_Propose, "Propose", "propose", "ÇÁ·¯Æ÷Áî", "ÇÁ·¯Æ÷Áî", TCM_SERVER, AUTH_ADMINISTRATOR, "ÇÁ·¯Æ÷Áî")
-	ON_TEXTCMDFUNC(TextCmd_Refuse, "Refuse", "refuse", "ÇÁ·¯Æ÷Áî°ÅÀý", "ÇÁ°Å", TCM_SERVER, AUTH_ADMINISTRATOR, "ÇÁ·¯Æ÷Áî°ÅÀý")
-	ON_TEXTCMDFUNC(TextCmd_Couple, "Couple", "couple", "Ä¿ÇÃ", "Ä¿ÇÃ", TCM_SERVER, AUTH_ADMINISTRATOR, "Ä¿ÇÃ")
-	ON_TEXTCMDFUNC(TextCmd_Decouple, "Decouple", "decouple", "Ä¿ÇÃÇØÁö", "Ä¿ÇØ", TCM_SERVER, AUTH_ADMINISTRATOR, "Ä¿ÇÃÇØÁö")
-	ON_TEXTCMDFUNC(TextCmd_ClearPropose, "ClearPropose", "clearpropose", "ÇÁ·¯Æ÷ÁîÃÊ±âÈ­", "ÇÁÃÊ", TCM_SERVER, AUTH_ADMINISTRATOR, "ÇÁ·¯Æ÷ÁîÃÊ±âÈ­")
+	ON_TEXTCMDFUNC(TextCmd_Propose, "Propose", "propose", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Refuse, "Refuse", "refuse", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Couple, "Couple", "couple", "Ä¿ï¿½ï¿½", "Ä¿ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "Ä¿ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Decouple, "Decouple", "decouple", "Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "Ä¿ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_ClearPropose, "ClearPropose", "clearpropose", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½È­", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½È­")
 
 #if __VER >= 13 // __COUPLE_1202
-	ON_TEXTCMDFUNC(TextCmd_NextCoupleLevel, "NextCoupleLevel", "ncl", "Ä¿ÇÃ·¹º§¾÷", "Ä¿·¹", TCM_SERVER, AUTH_ADMINISTRATOR, "Ä¿ÇÃ·¹º§¾÷")
+	ON_TEXTCMDFUNC(TextCmd_NextCoupleLevel, "NextCoupleLevel", "ncl", "Ä¿ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½", "Ä¿ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "Ä¿ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½")
 #endif	// __COUPLE_1202
 #endif	// __COUPLE_1117
 #ifdef __NPC_BUFF
-	ON_TEXTCMDFUNC(TextCmd_RemoveAllBuff, "RemoveBuff", "rb", "¹öÇÁÇØÁ¦", "¹öÇØ", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_RemoveAllBuff, "RemoveBuff", "rb", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
 #endif // __NPC_BUFF
 #if __VER >= 13
-	ON_TEXTCMDFUNC(TextCmd_HonorTitleSet, "HonorTitleSet", "hts", "´ÞÀÎ¼¼ÆÃ", "´Þ¼¼", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_HonorTitleSet, "HonorTitleSet", "hts", "ï¿½ï¿½ï¿½Î¼ï¿½ï¿½ï¿½", "ï¿½Þ¼ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
 #endif
 
 #ifdef __FL_EQUALIZED_MODE
@@ -4230,43 +4266,47 @@ ON_TEXTCMDFUNC(TextCmd_IgnoreList, "ignorelist", "igl", "Ã¤ÆÃÂ÷´Ü¸ñ·Ï", "Ã¤Â÷¸ñ"
 	ON_TEXTCMDFUNC(TextCmd_InitializeRandomOption, "InitializeRandomOption", "initializerandomoption", "iro", "IRO", TCM_BOTH, AUTH_ADMINISTRATOR, "")
 	ON_TEXTCMDFUNC(TextCmd_SetRandomOption, "SetRandomOption", "setrandomoption", "sro", "SRO", TCM_BOTH, AUTH_ADMINISTRATOR, "")
 
+#ifdef __WEAPON_RARITY
+	ON_TEXTCMDFUNC(TextCmd_SetWeaponRarity, "SetWeaponRarity", "swr", "", "", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+#endif // __WEAPON_RARITY
 
-	ON_TEXTCMDFUNC(TextCmd_Open, "open", "open", "¿­±â", "¿­±â", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_Close, "close", "close", "´Ý±â", "´Ý±â", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_Music, "music", "mu", "À½¾Ç", "À½¾Ç", TCM_SERVER, AUTH_ADMINISTRATOR, "¹è°æÀ½¾Ç")
-	ON_TEXTCMDFUNC(TextCmd_Sound, "sound", "so", "¼Ò¸®", "¼Ò¸®", TCM_SERVER, AUTH_ADMINISTRATOR, "»ç¿îµå È¿°ú")
-	ON_TEXTCMDFUNC(TextCmd_LocalEvent, "localevent", "le", "Áö¿ªÀÌº¥Æ®", "ÁöÀÌ", TCM_SERVER, AUTH_ADMINISTRATOR, "Áö¿ªÀÌº¥Æ®")
-	ON_TEXTCMDFUNC(TextCmd_QuerySetPlayerName, "SetPlayerName", "spn", "ÇÃ·¹ÀÌ¾îÀÌ¸§", "ÇÃÀÌ", TCM_SERVER, AUTH_ADMINISTRATOR, "ÇÃ·¹ÀÌ¾î ÀÌ¸§ º¯°æ")
-	ON_TEXTCMDFUNC(TextCmd_QuerySetGuildName, "SetGuildName", "sgn", "±æµåÀÌ¸§", "±æÀÌ", TCM_SERVER, AUTH_ADMINISTRATOR, "±æµå ÀÌ¸§ º¯°æ")
-	ON_TEXTCMDFUNC(TextCmd_DeclWar, "DeclWar", "declwar", "±æµåÀü½ÅÃ»", "±æ½Å", TCM_CLIENT, AUTH_ADMINISTRATOR, "±æµåÀü ½ÅÃ»")
-	ON_TEXTCMDFUNC(TextCmd_RemoveGuildMember, "rgm", "rgm", "±æµåÃß¹æ", "±æÃß", TCM_CLIENT, AUTH_ADMINISTRATOR, "±æµå Ãß¹æ")
-	ON_TEXTCMDFUNC(TextCmd_ItemMode, "gmitem", "gmitem", "¾ÆÀÌÅÛ¸ðµå", "¾Æ¸ð", TCM_SERVER, AUTH_ADMINISTRATOR, "¾ÆÀÌÅÛ ¸øÁý°í ¸ø¶³¾îÆ®¸®°Ô ÇÏ±â")
-	ON_TEXTCMDFUNC(TextCmd_ItemNotMode, "gmnotitem", "gmnotitem", "¾ÆÀÌÅÛÇØÁ¦", "¾Æ¸ðÇØ", TCM_SERVER, AUTH_ADMINISTRATOR, "¾ÆÀÌÅÛ ¸ðµå ÇØÁ¦")
-	ON_TEXTCMDFUNC(TextCmd_AttackMode, "gmattck", "gmattck", "°ø°Ý¸ðµå", "°ø¸ð", TCM_SERVER, AUTH_ADMINISTRATOR, "°ø°Ý ¸øÇÏ°Ô ÇÏ±â")
-	ON_TEXTCMDFUNC(TextCmd_AttackNotMode, "gmnotattck", "gmnotattck", "°ø°ÝÇØÁ¦", "°ø¸ðÇØ", TCM_SERVER, AUTH_ADMINISTRATOR, "°ø°Ý ¸ðµå ÇØÁ¦")
-	ON_TEXTCMDFUNC(TextCmd_CommunityMode, "gmcommunity", "gmcommunity", "Ä¿¹Â´ÏÆ¼¸ðµå", "Ä¿¸ð", TCM_SERVER, AUTH_ADMINISTRATOR, "±æµå, ÆÄÆ¼, Ä£±¸, °Å·¡, »óÁ¡ ¸øÇÏ°Ô ÇÏ±â")
-	ON_TEXTCMDFUNC(TextCmd_CommunityNotMode, "gmnotcommunity", "gmnotcommunity", "Ä¿¹Â´ÏÆ¼ÇØÁ¦", "Ä¿¸ðÇØ", TCM_SERVER, AUTH_ADMINISTRATOR, "Ä¿¹Â´ÏÆ¼ ¸ðµå ÇØÃ¼")
-	ON_TEXTCMDFUNC(TextCmd_ObserveMode, "gmobserve", "gmobserve", "°üÀü¸ðµå", "°ü¸ð", TCM_SERVER, AUTH_ADMINISTRATOR, "¾ÆÀÌÅÛ, Ä¿¹Â´ÏÆ¼, ¸»¸øÇÏ°Ô, ¾îÅØ ¸ðµå ÇÕÇÑ°Í")
-	ON_TEXTCMDFUNC(TextCmd_ObserveNotMode, "gmnotobserve", "gmnotobserve", "°üÀüÇØÁ¦", "°ü¸ðÇØ", TCM_SERVER, AUTH_ADMINISTRATOR, "°üÀü ¸ðµå ÇØÁ¦")
-	ON_TEXTCMDFUNC(TextCmd_EscapeReset, "EscapeReset", "EscapeReset", "Å»ÃâÃÊ±âÈ­", "Å»ÃÊ", TCM_BOTH, AUTH_ADMINISTRATOR, "Å»Ãâ(±ÍÈ¯¼®) ½Ã°£ ÃÊ±âÈ­")
-	ON_TEXTCMDFUNC(TextCmd_userlist, "userlist", "ul", "»ç¿ëÀÚ¸®½ºÆ®", "»ç¿ëÀÚ¸®", TCM_SERVER, AUTH_ADMINISTRATOR, "»ç¿ëÀÚ ¸®½ºÆ®")
-	ON_TEXTCMDFUNC(TextCmd_SetGuildQuest, "SetGuildQuest", "sgq", "±æµåÄù½ºÆ®", "±æÄù", TCM_SERVER, AUTH_ADMINISTRATOR, "±æµå Äù½ºÆ® »óÅÂ º¯°æ")
-	ON_TEXTCMDFUNC(TextCmd_SetSnoop, "Snoop", "snoop", "°¨Ã»", "°¨Ã»", TCM_SERVER, AUTH_ADMINISTRATOR, "°¨Ã»")
 
-	ON_TEXTCMDFUNC(TextCmd_GuildCombatRequest, "GCRequest", "gcrquest", "±æµå¿ö½ÅÃ»", "±æ¿ö½Å", TCM_BOTH, AUTH_ADMINISTRATOR, "±æµå´ëÀü ½ÅÃ»")
-	ON_TEXTCMDFUNC(TextCmd_GuildCombatCancel, "GCCancel", "gccancel", "±æµå¿öÅ»Åð", "±æ¿öÅ»", TCM_BOTH, AUTH_ADMINISTRATOR, "±æµå´ëÀü Å»Åð")
-	ON_TEXTCMDFUNC(TextCmd_ExpUpStop, "ExpUpStop", "eus", "°æÇèÄ¡±ÝÁö", "°æ±Ý", TCM_SERVER, AUTH_GENERAL, "»ç³ÉÀ¸·Î ¿À¸£´Â °æÇèÄ¡ »ó½ÂÀ» ±ÝÁö")
+	ON_TEXTCMDFUNC(TextCmd_Open, "open", "open", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_Close, "close", "close", "ï¿½Ý±ï¿½", "ï¿½Ý±ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_Music, "music", "mu", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Sound, "sound", "so", "ï¿½Ò¸ï¿½", "ï¿½Ò¸ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_LocalEvent, "localevent", "le", "ï¿½ï¿½ï¿½ï¿½ï¿½Ìºï¿½Æ®", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½Ìºï¿½Æ®")
+	ON_TEXTCMDFUNC(TextCmd_QuerySetPlayerName, "SetPlayerName", "spn", "ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½Ì¸ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_QuerySetGuildName, "SetGuildName", "sgn", "ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_DeclWar, "DeclWar", "declwar", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»", "ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»")
+	ON_TEXTCMDFUNC(TextCmd_RemoveGuildMember, "rgm", "rgm", "ï¿½ï¿½ï¿½ï¿½ß¹ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ ï¿½ß¹ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_ItemMode, "gmitem", "gmitem", "ï¿½ï¿½ï¿½ï¿½ï¿½Û¸ï¿½ï¿½", "ï¿½Æ¸ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_ItemNotMode, "gmnotitem", "gmnotitem", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½Æ¸ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_AttackMode, "gmattck", "gmattck", "ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ï±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_AttackNotMode, "gmnotattck", "gmnotattck", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_CommunityMode, "gmcommunity", "gmcommunity", "Ä¿ï¿½Â´ï¿½Æ¼ï¿½ï¿½ï¿½", "Ä¿ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½, ï¿½ï¿½Æ¼, Ä£ï¿½ï¿½, ï¿½Å·ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ï±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_CommunityNotMode, "gmnotcommunity", "gmnotcommunity", "Ä¿ï¿½Â´ï¿½Æ¼ï¿½ï¿½ï¿½ï¿½", "Ä¿ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "Ä¿ï¿½Â´ï¿½Æ¼ ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼")
+	ON_TEXTCMDFUNC(TextCmd_ObserveMode, "gmobserve", "gmobserve", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, Ä¿ï¿½Â´ï¿½Æ¼, ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ°ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_ObserveNotMode, "gmnotobserve", "gmnotobserve", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_EscapeReset, "EscapeReset", "EscapeReset", "Å»ï¿½ï¿½ï¿½Ê±ï¿½È­", "Å»ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "Å»ï¿½ï¿½(ï¿½ï¿½È¯ï¿½ï¿½) ï¿½Ã°ï¿½ ï¿½Ê±ï¿½È­")
+	ON_TEXTCMDFUNC(TextCmd_userlist, "userlist", "ul", "ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½Æ®", "ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®")
+	ON_TEXTCMDFUNC(TextCmd_SetGuildQuest, "SetGuildQuest", "sgq", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_SetSnoop, "Snoop", "snoop", "ï¿½ï¿½Ã»", "ï¿½ï¿½Ã»", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½Ã»")
+
+	ON_TEXTCMDFUNC(TextCmd_GuildCombatRequest, "GCRequest", "gcrquest", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»", "ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»")
+	ON_TEXTCMDFUNC(TextCmd_GuildCombatCancel, "GCCancel", "gccancel", "ï¿½ï¿½ï¿½ï¿½Å»ï¿½ï¿½", "ï¿½ï¿½ï¿½Å»", TCM_BOTH, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å»ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_ExpUpStop, "ExpUpStop", "eus", "ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_GENERAL, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
 
 #ifdef __FL_UPDATE_READSTAFF
-	ON_TEXTCMDFUNC(TextCmd_LoadServerStaff, "LoadServerStaff", "LSS", "°æÇèÄ¡±ÝÁö", "°æ±Ý", TCM_SERVER, AUTH_ADMINISTRATOR, "»ç³ÉÀ¸·Î ¿À¸£´Â °æÇèÄ¡ »ó½ÂÀ» ±ÝÁö")
+	ON_TEXTCMDFUNC(TextCmd_LoadServerStaff, "LoadServerStaff", "LSS", "ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
 #endif
 
 #ifdef __FL_FFA
-	ON_TEXTCMDFUNC(TextCmd_ReloadFFA, "ReloadFFA", "reloadffa", "°æÇèÄ¡±ÝÁö", "°æ±Ý", TCM_SERVER, AUTH_ADMINISTRATOR, "»ç³ÉÀ¸·Î ¿À¸£´Â °æÇèÄ¡ »ó½ÂÀ» ±ÝÁö")
+	ON_TEXTCMDFUNC(TextCmd_ReloadFFA, "ReloadFFA", "reloadffa", "ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
 #endif
 #ifdef __FL_TDM
-	ON_TEXTCMDFUNC(TextCmd_ReloadTDM, "ReloadTDM", "reloadtdm", "°æÇèÄ¡±ÝÁö", "°æ±Ý", TCM_SERVER, AUTH_ADMINISTRATOR, "»ç³ÉÀ¸·Î ¿À¸£´Â °æÇèÄ¡ »ó½ÂÀ» ±ÝÁö")
-	ON_TEXTCMDFUNC(TextCmd_StartTDM, "StartTDM", "starttdm", "°æÇèÄ¡±ÝÁö", "°æ±Ý", TCM_SERVER, AUTH_ADMINISTRATOR, "»ç³ÉÀ¸·Î ¿À¸£´Â °æÇèÄ¡ »ó½ÂÀ» ±ÝÁö")
+	ON_TEXTCMDFUNC(TextCmd_ReloadTDM, "ReloadTDM", "reloadtdm", "ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_StartTDM, "StartTDM", "starttdm", "ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
 #endif
 
 #ifdef __FL_WHEEL_OF_FORTUNE
@@ -4286,83 +4326,83 @@ ON_TEXTCMDFUNC(TextCmd_IgnoreList, "ignorelist", "igl", "Ã¤ÆÃÂ÷´Ü¸ñ·Ï", "Ã¤Â÷¸ñ"
 
 
 #ifdef __S1108_BACK_END_SYSTEM
-	ON_TEXTCMDFUNC(TextCmd_PropMonster, "monstersetting", "ms", "¸ó½ºÅÍ¼³Á¤", "¸ó¼³", TCM_CLIENT, AUTH_ADMINISTRATOR, "¸ó½ºÅÍ ¼³Á¤ º¸±â")
+	ON_TEXTCMDFUNC(TextCmd_PropMonster, "monstersetting", "ms", "ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½", "ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
 #else
-	ON_TEXTCMDFUNC(TextCmd_ChangeShopCost, "changeshopcost", "csc", "»óÁ¡°¡°ÝÁ¶Á¤", "»ó°¡Á¶", TCM_SERVER, AUTH_ADMINISTRATOR, "»óÁ¡°¡°ÝÁ¶Á¤ Min(0.5) ~ Max(2.0)")
+	ON_TEXTCMDFUNC(TextCmd_ChangeShopCost, "changeshopcost", "csc", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Min(0.5) ~ Max(2.0)")
 #endif // __S1108_BACK_END_SYSTEM
 
 #if __VER >= 10 // __REMOVE_ATTRIBUTE
-	ON_TEXTCMDFUNC(TextCmd_RemoveAttribute, "RemAttr", "remattr", "¼Ó¼ºÁ¦°Å", "¼ÓÁ¦", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_RemoveAttribute, "RemAttr", "remattr", "ï¿½Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
 #endif // __REMOVE_ATTRIBUTE
 
 #if __VER >= 11 // __SYS_IDENTIFY
-	ON_TEXTCMDFUNC(TextCmd_ItemLevel, "ItemLevel", "il", "ÇÏ¶ô", "ÇÏ¶ô", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_ItemLevel, "ItemLevel", "il", "ï¿½Ï¶ï¿½", "ï¿½Ï¶ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
 #endif	// __SYS_IDENTIFY
 
 #if __VER >= 12 // __SECRET_ROOM
-	ON_TEXTCMDFUNC(TextCmd_SecretRoomOpen, "SROPEN", "sropen", "ºñ¹ÐÀÇ¹æ¿ÀÇÂ", "ºñ¿À", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_SecretRoomNext, "SRNEXT", "srnext", "ºñ¹ÐÀÇ¹æ´ÙÀ½", "ºñ´Ù", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_SecretRoomEntrance, "SRENTRANCE", "srentrance", "ºñ¹ÐÀÇ¹æÀÔÀå", "ºñÀÔÀå", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_SecretRoomTender, "SRTENDER", "srtender", "ºñ¹ÐÀÇ¹æÀÔÂû", "ºñÀÔ", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_SecretRoomLineUp, "SRLINEUP", "srlineup", "ºñ¹ÐÀÇ¹æ±¸¼º", "ºñ±¸", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_SecretRoomClose, "SRCLOSE", "srclose", "ºñ¹ÐÀÇ¹æ´Ý±â", "ºñ´Ý", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_SecretRoomTenderView, "SRVIEW", "srview", "ºñ¹ÐÀÇ¹æÀÔÂûÇöÈ²", "ºñÇö", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_SecretRoomTenderCancelReturn, "SRCANCEL", "srcancel", "ºñ¹ÐÀÇ¹æÀÔÂûÃë¼Ò", "ºñÃë", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_SecretRoomOpen, "SROPEN", "sropen", "ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_SecretRoomNext, "SRNEXT", "srnext", "ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_SecretRoomEntrance, "SRENTRANCE", "srentrance", "ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_SecretRoomTender, "SRTENDER", "srtender", "ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_SecretRoomLineUp, "SRLINEUP", "srlineup", "ï¿½ï¿½ï¿½ï¿½Ç¹æ±¸ï¿½ï¿½", "ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_SecretRoomClose, "SRCLOSE", "srclose", "ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½Ý±ï¿½", "ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_SecretRoomTenderView, "SRVIEW", "srview", "ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È²", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_SecretRoomTenderCancelReturn, "SRCANCEL", "srcancel", "ï¿½ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
 #endif // __SECRET_ROOM
 
 #if __VER >= 12 // __LORD
-	ON_TEXTCMDFUNC(TextCmd_ElectionRequirement, "ElectionRequirement", "er", "±ºÁÖÅõÇ¥ÇöÈ²", "±ºÅõÇö", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_ElectionRequirement, "ElectionRequirement", "er", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½È²", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
 	//#ifdef __INTERNALSERVER
-	ON_TEXTCMDFUNC(TextCmd_ElectionAddDeposit, "ElectionAddDeposit", "ead", "±ºÁÖÀÔÂû", "±ºÀÔ", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_ElectionSetPledge, "ElectionSetPledge", "esp", "±ºÁÖ°ø¾à¼³Á¤", "±º°ø", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_ElectionIncVote, "ElectionIncVote", "eiv", "±ºÁÖÅõÇ¥", "±ºÅõ", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_ElectionProcess, "ElectionProcess", "ep", "±ºÁÖÇÁ·Î¼¼½º", "±ºÇÁ", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_ElectionBeginCandidacy, "ElectionBeginCandidacy", "ebc", "±ºÁÖÀÔÈÄº¸½ÃÀÛ", "±ºÀÔ½Ã", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_ElectionBeginVote, "ElectionBeginVote", "ebv", "±ºÁÖÅõÇ¥½ÃÀÛ", "±ºÅõ½Ã", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_ElectionEndVote, "ElectionEndVote", "eev", "±ºÁÖÅõÇ¥Á¾·á", "±ºÅõÁ¾", TCM_BOTH, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_ElectionState, "ElectionState", "estate", "±ºÁÖÅõÇ¥»óÅÂ", "±ºÅõ»ó", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_LEventCreate, "LEventCreate", "lecreate", "±ºÁÖÀÌº¥Æ®½ÃÀÛ", "±ºÀÌ½Ã", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_LEventInitialize, "LEventInitialize", "leinitialize", "±ºÁÖÀÌº¥Æ®ÃÊ±âÈ­", "±ºÀÌÃÊ", TCM_SERVER, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_LSkill, "LSkill", "lskill", "±ºÁÖ½ºÅ³", "±º½º", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_RemoveTotalGold, "RemoveTotalGold", "rtg", "µ·»èÁ¦", "µ·»è", TCM_SERVER, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_ElectionAddDeposit, "ElectionAddDeposit", "ead", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_ElectionSetPledge, "ElectionSetPledge", "esp", "ï¿½ï¿½ï¿½Ö°ï¿½ï¿½à¼³ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_ElectionIncVote, "ElectionIncVote", "eiv", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¥", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_ElectionProcess, "ElectionProcess", "ep", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¼ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_ElectionBeginCandidacy, "ElectionBeginCandidacy", "ebc", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½Ô½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_ElectionBeginVote, "ElectionBeginVote", "ebv", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_ElectionEndVote, "ElectionEndVote", "eev", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_ElectionState, "ElectionState", "estate", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_LEventCreate, "LEventCreate", "lecreate", "ï¿½ï¿½ï¿½ï¿½ï¿½Ìºï¿½Æ®ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½Ì½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_LEventInitialize, "LEventInitialize", "leinitialize", "ï¿½ï¿½ï¿½ï¿½ï¿½Ìºï¿½Æ®ï¿½Ê±ï¿½È­", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_LSkill, "LSkill", "lskill", "ï¿½ï¿½ï¿½Ö½ï¿½Å³", "ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_RemoveTotalGold, "RemoveTotalGold", "rtg", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "")
 	//#endif	// __INTERNALSERVER
 #endif	// __LORD
 
 #if __VER >= 12 // __TAX
-	ON_TEXTCMDFUNC(TextCmd_TaxApplyNow, "TaxApplyNow", "tan", "¼¼À²Àû¿ë", "¼¼Àû", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_TaxApplyNow, "TaxApplyNow", "tan", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_BOTH, AUTH_ADMINISTRATOR, "")
 #endif // __TAX
 
 #if __VER >= 12 // __HEAVEN_TOWER
-	ON_TEXTCMDFUNC(TextCmd_HeavenTower, "HeavenTower", "HTower", "½É¿¬ÀÇÅ¾", "½ÉÅ¾", TCM_BOTH, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_HeavenTower, "HeavenTower", "HTower", "ï¿½É¿ï¿½ï¿½ï¿½Å¾", "ï¿½ï¿½Å¾", TCM_BOTH, AUTH_ADMINISTRATOR, "")
 #endif //__HEAVEN_TOWER
 
-	ON_TEXTCMDFUNC(TextCmd_PickupPetAwakeningCancel, "PickupPetAwakeningCancel", "ppac", "ÇÈ¾÷Æê°¢¼ºÃë¼Ò", "ÇÈ¼Ò", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_PickupPetAwakeningCancel, "PickupPetAwakeningCancel", "ppac", "ï¿½È¾ï¿½ï¿½ê°¢ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½È¼ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
 
 #ifdef __LAYER_1020
-	ON_TEXTCMDFUNC(TextCmd_CreateLayer, "CreateLayer", "cl", "·¹ÀÌ¾î»ý¼º", "·¹»ý", TCM_SERVER, AUTH_ADMINISTRATOR, "·¹ÀÌ¾î»ý¼º")
-	ON_TEXTCMDFUNC(TextCmd_DeleteLayer, "DeleteLayer", "dl", "·¹ÀÌ¾îÆÄ±«", "·¹ÆÄ", TCM_SERVER, AUTH_ADMINISTRATOR, "·¹ÀÌ¾îÆÄ±«")
-	ON_TEXTCMDFUNC(TextCmd_Layer, "Layer", "lay", "·¹ÀÌ¾îÀÌµ¿", "·¹ÀÌ", TCM_SERVER, AUTH_ADMINISTRATOR, "·¹ÀÌ¾îÀÌµ¿")
+	ON_TEXTCMDFUNC(TextCmd_CreateLayer, "CreateLayer", "cl", "ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_DeleteLayer, "DeleteLayer", "dl", "ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½Ä±ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½Ä±ï¿½")
+	ON_TEXTCMDFUNC(TextCmd_Layer, "Layer", "lay", "ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½Ìµï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½Ìµï¿½")
 #endif	// __LAYER_1020
 
 #if __VER >= 13 // __HOUSING
-	ON_TEXTCMDFUNC(TextCmd_HousingVisitRoom, "HousingVisit", "hv", "¹æ¹®", "¹æ¹®", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_HousingGMRemoveAll, "HousingGMRemoveAll", "hgmra", "°¡±¸»èÁ¦", "°¡»è", TCM_SERVER, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_HousingVisitRoom, "HousingVisit", "hv", "ï¿½æ¹®", "ï¿½æ¹®", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_HousingGMRemoveAll, "HousingGMRemoveAll", "hgmra", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "")
 #endif // __HOUSING
 
 #if __VER >= 15 // __15_5TH_ELEMENTAL_SMELT_SAFETY
-	ON_TEXTCMDFUNC(TextCmd_SmeltSafetyElement, "SmeltSafetyElement", "sse", "¾ÈÀüÁ¦·Ã¼Ó¼º", "¾ÈÁ¦¼Ó", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_SmeltSafetyElement, "SmeltSafetyElement", "sse", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¼Ó¼ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
 #endif // __15_5TH_ELEMENTAL_SMELT_SAFETY
 
 #if __VER >= 15 // __GUILD_HOUSE
-	ON_TEXTCMDFUNC(TextCmd_BuyGuildHouse, "BuyGuildHouse", "bgh", "±æµåÇÏ¿ì½º±¸ÀÔ", "±æÇÏ±¸", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_GuildHouseUpkeep, "GuildHouseUpkeep", "ghu", "±æµåÇÏ¿ì½ºÀ¯Áöºñ", "±æÇÏÀ¯", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_BuyGuildHouse, "BuyGuildHouse", "bgh", "ï¿½ï¿½ï¿½ï¿½Ï¿ì½ºï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½Ï±ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_GuildHouseUpkeep, "GuildHouseUpkeep", "ghu", "ï¿½ï¿½ï¿½ï¿½Ï¿ì½ºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "")
 #endif // __GUILD_HOUSE
 
-	ON_TEXTCMDFUNC(TextCmd_InvenRemove, "InvenRemove", "irm", "ÀÎº¥»èÁ¦", "ÀÎ»è", TCM_SERVER, AUTH_ADMINISTRATOR, "")
+	ON_TEXTCMDFUNC(TextCmd_InvenRemove, "InvenRemove", "irm", "ï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½Î»ï¿½", TCM_SERVER, AUTH_ADMINISTRATOR, "")
 
 #ifdef __AIO_ADMIN_THINGS
 	ON_TEXTCMDFUNC(TextCmd_Duplicate, "Duplicate", "duplicate", "dupe", "DUPE", TCM_SERVER, AUTH_ADMINISTRATOR, "")
-	ON_TEXTCMDFUNC(TextCmd_Restart, "RESTART", "restart", "°æÇèÄ¡±ÝÁö", "°æ±Ý", TCM_CLIENT, AUTH_ADMINISTRATOR, "»ç³ÉÀ¸·Î ¿À¸£´Â °æÇèÄ¡ »ó½ÂÀ» ±ÝÁö")
+	ON_TEXTCMDFUNC(TextCmd_Restart, "RESTART", "restart", "ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", TCM_CLIENT, AUTH_ADMINISTRATOR, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
 	ON_TEXTCMDFUNC(TextCmd_SetRandomScroll, "SetRandomScroll", "setrandomscroll", "srs", "SRS", TCM_BOTH, AUTH_ADMINISTRATOR, "")
 	ON_TEXTCMDFUNC(TextCmd_KillPlayer, "Kill", "kill", "k", "K", TCM_SERVER, AUTH_ADMINISTRATOR, "")
 	ON_TEXTCMDFUNC(TextCmd_LevelPlayer, "LevelPlayer", "levelplayer", "lp", "LP", TCM_SERVER, AUTH_ADMINISTRATOR, "")

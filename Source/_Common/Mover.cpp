@@ -1752,6 +1752,58 @@ BOOL CMover::CreateItem(CItemElem* pItemElem, int nType)
 	if (pItemElem->m_nHitPoint <= 0)
 		pItemElem->m_nHitPoint = (pItemProp->dwEndurance == -1) ? 0 : pItemProp->dwEndurance;
 
+	#ifdef __WEAPON_RARITY
+	if (IsValidRarityItem(pItemElem->GetProp()->dwItemKind3) || IsValidRarityItem2(pItemElem->GetProp()->dwItemKind3))
+	{
+		if (pItemElem->m_nWeaponRarity < 1)
+			pItemElem->m_nWeaponRarity = 1;
+	}
+	else
+		pItemElem->m_nWeaponRarity = 0;
+
+	//NOTICE
+	if (IsPlayer() && pItemElem->m_nWeaponRarity > 1)
+	{
+		CString strWeapon;
+		BOOL bCheck = FALSE;
+		if (pItemElem->m_nWeaponRarity == 5)
+		{
+			strWeapon.Format("[Legendary] %s", pItemElem->GetName());
+			bCheck = TRUE;
+		}
+		else if (pItemElem->m_nWeaponRarity == 4)
+		{
+			strWeapon.Format("[Mythical] %s", pItemElem->GetName());
+			bCheck = TRUE;
+		}
+		//else if (pItemElem->m_nWeaponRarity == 3)
+		//{
+		//	strWeapon.Format("[Rare] %s", pItemElem->GetName());
+		//	bCheck = TRUE;
+		//}
+		//else if (pItemElem->m_nWeaponRarity == 2)
+		//{
+		//	strWeapon.Format("[Uncommon] %s", pItemElem->GetName());
+		//	bCheck = TRUE;
+		//}
+
+		if (bCheck && strWeapon != "")
+		{
+			//char szMsg[500];
+			//sprintf(szMsg, "[Notice] %s obtained %s!", ((CUser*)this)->GetName(), strWeapon);
+
+			CString str;
+			str.Format("[Notice] %s obtained %s!", ((CUser*)this)->GetName(), strWeapon);
+
+#ifdef _ANNOUNCE_RENDERER
+			g_UserMng.SendAnnouncement(str.GetBuffer(0), AnnounceRenderer::RendererType::TYPE_CENTER, 0);
+#endif
+
+			//g_DPCoreClient.SendCaption(szMsg, 0, 1);
+		}
+	}
+#endif // __WEAPON_RARITY
+
 	if (pItemElem->GetSerialNumber() == 0)
 		pItemElem->SetSerialNumber();
 
@@ -2336,7 +2388,7 @@ void CMover::ProcessScaleSlerp()
 			D3DXVECTOR3 vScale = GetScale();
 			if (pMoverProp->dwClass != RANK_MATERIAL && pMoverProp->dwClass != RANK_SUPER && pMoverProp->dwClass != RANK_MIDBOSS)
 			{
-				LPCTSTR szErr = Error("CMover::Process : ÀÚ¿ø¸÷ÀÌ ¾Æ´Ñµ¥ µé¾î¿Ô´Ù.%s %f, %f, %f %f %f", GetName(), m_fDestScaleSlerp, m_fDestScale, vScale.x, vScale.y, vScale.z);
+				LPCTSTR szErr = Error("CMover::Process : ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ñµï¿½ ï¿½ï¿½ï¿½Ô´ï¿½.%s %f, %f, %f %f %f", GetName(), m_fDestScaleSlerp, m_fDestScale, vScale.x, vScale.y, vScale.z);
 				//ADDERRORMSG( szErr );
 				m_fDestScaleSlerp = 0;
 			}
@@ -4648,7 +4700,7 @@ BOOL CMover::DropItem(CMover* pAttacker)
 				if (xRandom(3000000000) <= dwProbability)
 				{
 					if (pQuestItem->dwNumber == 0)
-						Error("CMover::DropItem : %sÀÇ quest item drop %d¹øÂ°ÀÇ dwNumber°¡ 0", GetName(), i);
+						Error("CMover::DropItem : %sï¿½ï¿½ quest item drop %dï¿½ï¿½Â°ï¿½ï¿½ dwNumberï¿½ï¿½ 0", GetName(), i);
 					nNum = (short)(xRandom(pQuestItem->dwNumber) + 1);
 					if (pQuestItem->dwIndex == 0)
 					{
@@ -4852,6 +4904,36 @@ BOOL CMover::DropItem(CMover* pAttacker)
 								itemElem.m_dwItemId = lpDropItem->dwIndex;
 								itemElem.m_nItemNum = (short)(xRandom(dwNum) + 1);
 								itemElem.SetAbilityOption(lpDropItem->dwLevel);
+								#ifdef __WEAPON_RARITY
+								if (IsValidRarityItem(itemElem.GetProp()->dwItemKind3) || IsValidRarityItem2(itemElem.GetProp()->dwItemKind3))
+								{
+									BOOL bCheck = FALSE;
+									//if (!bCheck && xRandom(0, 10000) < 30)
+									//{
+									//	pItemElem->m_nWeaponRarity = 5;
+									//	bCheck = TRUE;
+									//}
+									//if (!bCheck && xRandom(0, 10000) < 50)
+									//{
+									//	pItemElem->m_nWeaponRarity = 4;
+									//	bCheck = TRUE;
+									//}
+									if (!bCheck && xRandom(0, 10000) < 20)
+									{
+										itemElem.m_nWeaponRarity = 3;
+										bCheck = TRUE;
+									}
+									if (!bCheck && xRandom(0, 10000) < 25)
+									{
+										itemElem.m_nWeaponRarity = 2;
+										bCheck = TRUE;
+									}
+									if (!bCheck)
+										itemElem.m_nWeaponRarity = 1;
+								}
+								else
+									itemElem.m_nWeaponRarity = 0;
+								#endif // __WEAPON_RARITY
 
 								if (pAttacker->CreateItem(&itemElem) == TRUE)
 								{	// log
@@ -4887,6 +4969,36 @@ BOOL CMover::DropItem(CMover* pAttacker)
 								pItemElem->SetRandomOpt(CRandomOptItemGen::GetInstance()->GenRandomOptItem(lpMoverProp->dwLevel, (FLOAT)nProbability / 100.0f, pItemProp, lpMoverProp->dwClass));
 							}
 							pItemElem->SetAbilityOption(lpDropItem->dwLevel);
+							#ifdef __WEAPON_RARITY
+							if (IsValidRarityItem(pItemElem->GetProp()->dwItemKind3) || IsValidRarityItem2(pItemElem->GetProp()->dwItemKind3))
+							{
+								BOOL bCheck = FALSE;
+								//if (!bCheck && xRandom(0, 10000) < 30)
+								//{
+								//	pItemElem->m_nWeaponRarity = 5;
+								//	bCheck = TRUE;
+								//}
+								//if (!bCheck && xRandom(0, 10000) < 50)
+								//{
+								//	pItemElem->m_nWeaponRarity = 4;
+								//	bCheck = TRUE;
+								//}
+								if (!bCheck && xRandom(0, 10000) < 20)
+								{
+									pItemElem->m_nWeaponRarity = 3;
+									bCheck = TRUE;
+								}
+								if (!bCheck && xRandom(0, 10000) < 25)
+								{
+									pItemElem->m_nWeaponRarity = 2;
+									bCheck = TRUE;
+								}
+								if (!bCheck)
+									pItemElem->m_nWeaponRarity = 1;
+							}
+							else
+								pItemElem->m_nWeaponRarity = 0;
+							#endif // __WEAPON_RARITY
 							pItemElem->SetSerialNumber();
 							CItem* pItem = new CItem;
 							pItem->m_pItemBase = pItemElem;
@@ -6831,7 +6943,7 @@ void CMover::ProcessSFXDamage(void)
 			}
 			else
 			{
-				TRACE("¿¹¿Ü Ã³¸®\n");
+				TRACE("ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½\n");
 				if (si.dwTickCount > sc.dwTickCount)
 				{
 					while (qCount.size() > 0)

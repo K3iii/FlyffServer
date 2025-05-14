@@ -579,7 +579,7 @@ public:
 
 	void PutEquipItemText(CEditString* pEdit);
 
-	BOOL PutDestParam(ItemProp* pItemProp, AddSkillProp* pAddSkillProp, CEditString* pEdit);
+	BOOL PutDestParam(ItemProp* pItemProp, AddSkillProp* pAddSkillProp, CEditString* pEdit, CItemElem* pItemElem = NULL);
 	BOOL PutSocketCard(ItemProp* pItemProp, CEditString* pEdit);
 	BOOL PutFurniture(ItemProp* pItemProp, CEditString* pEdit);
 	BOOL PutBeadInfo(CItemElem* pItemElem, ItemProp* pItemProp, CEditString* pEdit);

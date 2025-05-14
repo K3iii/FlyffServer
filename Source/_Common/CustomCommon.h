@@ -3,7 +3,7 @@
 #define __LOCAL_TESTS TRUE					        //| TRUE = Local | FALSE = Live 
 #define __NEUZ_IPSET __LOCAL_TESTS == TRUE ? "127.0.0.1" : "123.123.123.123"		 
 #define	__NEUZ_MSGVR "f14538dg1h26z"				//| Patch Version
-#define	__NEUZ_TITLE "FlyFF"				        //| Neuz Wnd Title
+#define	__NEUZ_TITLE "Zeus FlyFF"				        //| Neuz Wnd Title
 #define __NEUZ_PHASH "kikugalanet"			        //| Password hash
 #define	__NEUZ_BOOTS __LOCAL_TESTS == TRUE ? "" : "sunkist"		
 #define	__MAX_SPEED	 200					        //| Max speed
@@ -88,6 +88,7 @@
 #define __TEST_ANISOTROPIC					        //| Some random Anisotropy
 #define __TEST_ANTIALIASING					        //| Some random Antialiasing
 #define __TEST_PACKET_CRYPT					        //| Some random Packet Cryptage
+#define __WEAPON_RARITY	                            //| Flyff Weapon Rarity
 
 // Classic Content & Other
 #define __V21_CLOSE_EXISTING_CONNECTION				//| Actually should fix rare problem when you cant disconnect your own account

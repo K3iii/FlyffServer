@@ -47,6 +47,10 @@ CItemElem::CItemElem()
 #ifdef __MODEL_CHANGE
 	m_dwLookId = NULL_ID;
 #endif
+
+#ifdef __WEAPON_RARITY
+	m_nWeaponRarity = 0;
+#endif // __WEAPON_RARITY
 }
 
 CItemElem::~CItemElem()
@@ -102,6 +106,10 @@ CItemElem& CItemElem::operator =(CItemElem& ie)
 #ifdef __MODEL_CHANGE
 	m_dwLookId = ie.GetLook();
 #endif
+
+#ifdef __WEAPON_RARITY
+	m_nWeaponRarity = ie.m_nWeaponRarity;
+#endif // __WEAPON_RARITY
 
 	return *this;
 }

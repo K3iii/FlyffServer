@@ -45,7 +45,7 @@ LPSKILL CMover::GetSkill(int nType, int nIdx)
 {
 	if (nIdx >= MAX_SKILL_JOB)
 	{
-		Error("CMover::GetSkill : %s nId = %d ¹üÀ§¸¦ ¹þ¾î³²", m_szName, nIdx);
+		Error("CMover::GetSkill : %s nId = %d ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³²", m_szName, nIdx);
 		nIdx = 0;
 	}
 	return &m_aJobSkill[nIdx];
@@ -1220,6 +1220,45 @@ int CMover::SumEquipDefenseAbility(LONG* pnMin, LONG* pnMax)
 						float f = GetItemMultiplier(pItemElem);
 						nMin += (int)(pItemProp->dwAbilityMin * f) + nOptionVal;
 						nMax += (int)(pItemProp->dwAbilityMax * f) + nOptionVal;
+						#ifdef __WEAPON_RARITY
+						if (pItemElem->m_nWeaponRarity > 0)
+						{
+							int nMinRarity;
+							int nMaxRarity;
+							switch (pItemElem->m_nWeaponRarity)
+							{
+							case 5:
+								nMinRarity = (int)(nMin * 0.25f);
+								nMaxRarity = (int)(nMax * 0.25f);
+								break;
+							case 4:
+								nMinRarity = (int)(nMin * 0.2f);
+								nMaxRarity = (int)(nMax * 0.2f);
+								break;
+							case 3:
+								nMinRarity = (int)(nMin * 0.15f);
+								nMaxRarity = (int)(nMax * 0.15f);
+								break;
+							case 2:
+								nMinRarity = (int)(nMin * 0.1f);
+								nMaxRarity = (int)(nMax * 0.1f);
+								break;
+							case 1:
+								nMinRarity = (int)(nMin * 0.05f);
+								nMaxRarity = (int)(nMax * 0.05f);
+								break;
+							}
+							if (nMinRarity < 1)
+								nMin += 1;
+							else
+								nMin += nMinRarity;
+
+							if (nMaxRarity < 1)
+								nMax += 1;
+							else
+								nMax += nMaxRarity;
+						}
+					#endif // __WEAPON_RARITY
 					}
 				}
 			}
@@ -1323,11 +1362,11 @@ BOOL CMover::SetPoison(BOOL bApply, OBJID idAttacker, DWORD tmMaxTime, DWORD tmU
 			return FALSE;
 		SetDestParam(DST_CHRSTATE, CHS_POISON, NULL_CHGPARAM);
 		if (tmMaxTime == -1)
-			Error("SetPoison : %s µ¶È¿°úÀÇ Áö¼Ó½Ã°£ÀÌ ÁöÁ¤µÇÁö ¾ÊÀ½", GetName());
+			Error("SetPoison : %s ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ó½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", GetName());
 		if (tmUnit == -1)
-			Error("SetPoison : %s µ¶È¿°úÀÇ tick ½Ã°£ÀÌ ÁöÁ¤µÇÁö ¾ÊÀ½", GetName());
+			Error("SetPoison : %s ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ tick ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", GetName());
 		if (wDamage == -1)
-			Error("SetPoison : %s µ¶È¿°úÀÇ Æ½´ç µ¥¹ÌÁö°¡ ÁöÁ¤µÇÁö ¾ÊÀ½", GetName());
+			Error("SetPoison : %s ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ Æ½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", GetName());
 
 		m_wPoisonDamage = wDamage;
 		m_tmPoisonUnit = tmUnit;
@@ -1354,11 +1393,11 @@ BOOL	CMover::SetBleeding(BOOL bApply, OBJID idAttacker, DWORD tmMaxTime, DWORD t
 
 		SetDestParam(DST_CHRSTATE, CHS_BLEEDING, NULL_CHGPARAM);
 		if (tmMaxTime == -1)
-			Error("SetBleeding : %s ÃâÇ÷È¿°úÀÇ Áö¼Ó½Ã°£ÀÌ ÁöÁ¤µÇÁö ¾ÊÀ½", GetName());
+			Error("SetBleeding : %s ï¿½ï¿½ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ó½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", GetName());
 		if (tmUnit == -1)
-			Error("SetBleeding : %s ÃâÇ÷È¿°úÀÇ tick ½Ã°£ÀÌ ÁöÁ¤µÇÁö ¾ÊÀ½", GetName());
+			Error("SetBleeding : %s ï¿½ï¿½ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ tick ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", GetName());
 		if (wDamage == -1)
-			Error("SetBleeding : %s ÃâÇ÷È¿°úÀÇ Æ½´ç µ¥¹ÌÁö°¡ ÁöÁ¤µÇÁö ¾ÊÀ½", GetName());
+			Error("SetBleeding : %s ï¿½ï¿½ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ Æ½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", GetName());
 
 		m_wBleedingDamage = wDamage;
 		m_tmBleedingUnit = tmUnit;
@@ -2230,7 +2269,7 @@ int CMover::GetResistSpell(int nDestParam)
 {
 	MoverProp* pProp = GetProp();
 	if (pProp == NULL)
-		Error("CMover::GetReistSpell : %d ÇÁ·ÎÆÛÆ¼ ÀÐ±â ½ÇÆÐ", GetName());
+		Error("CMover::GetReistSpell : %d ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ ï¿½Ð±ï¿½ ï¿½ï¿½ï¿½ï¿½", GetName());
 
 	int		nResist = 0;
 
@@ -2242,7 +2281,7 @@ int CMover::GetResistSpell(int nDestParam)
 	case DST_RESIST_EARTH:			nResist = pProp->nResistEarth;		break;
 	case DST_RESIST_WIND:			nResist = pProp->nResistWind;		break;
 	default:
-		Error("CMover::GetResistSpell : %s ÆÄ¶ó¸ÞÅÍ Àß¸øµÊ %d", GetName(), nDestParam);
+		Error("CMover::GetResistSpell : %s ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½ß¸ï¿½ï¿½ï¿½ %d", GetName(), nDestParam);
 		break;
 	}
 	return GetParam(nDestParam, nResist);
@@ -2505,7 +2544,7 @@ BOOL CMover::__SetQuest(LPQUEST lpQuest, LPQUEST lpNewQuest)
 	{
 		if (m_nQuestSize >= MAX_QUEST)
 		{
-			Error("SetQuestCnt : Äù½ºÆ® ÃÊ°ú");
+			Error("SetQuestCnt : ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ê°ï¿½");
 			return FALSE;
 		}
 #ifdef __CLIENT
@@ -2896,6 +2935,13 @@ void CMover::UpdateItem(BYTE nId, CHAR cParam, DWORD dwValue, DWORD dwTime, int 
 			UpdateParam();
 			break;
 		}
+		#ifdef __WEAPON_RARITY
+		case UI_WEAPONRARITY:
+		{
+			static_cast<CItemElem*>(pItemBase)->m_nWeaponRarity = static_cast<short>(dwValue);
+		}
+		break;
+		#endif // __WEAPON_RARITY
 
 		default:
 			break;

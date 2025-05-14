@@ -512,6 +512,45 @@ void CMover::GetHitMinMax(int* pnMin, int* pnMax, ATTACK_INFO* pInfo)
 				*pnMax += nValue;
 			}
 		}
+		#ifdef __WEAPON_RARITY
+		if (pWeapon && pWeapon->m_nWeaponRarity > 0)
+		{
+			int nMinRarity;
+			int nMaxRarity;
+			switch (pWeapon->m_nWeaponRarity)
+			{
+			case 5:
+				nMinRarity = (int)(*pnMin * 0.25f);
+				nMaxRarity = (int)(*pnMax * 0.25f);
+				break;
+			case 4:
+				nMinRarity = (int)(*pnMin * 0.2f);
+				nMaxRarity = (int)(*pnMax * 0.2f);
+				break;
+			case 3:
+				nMinRarity = (int)(*pnMin * 0.15f);
+				nMaxRarity = (int)(*pnMax * 0.15f);
+				break;
+			case 2:
+				nMinRarity = (int)(*pnMin * 0.1f);
+				nMaxRarity = (int)(*pnMax * 0.1f);
+				break;
+			case 1:
+				nMinRarity = (int)(*pnMin * 0.05f);
+				nMaxRarity = (int)(*pnMax * 0.05f);
+				break;
+			}
+			if (nMinRarity < 1)
+				*pnMin += 1;
+			else
+				*pnMin += nMinRarity;
+
+			if (nMaxRarity < 1)
+				*pnMax += 1;
+			else
+				*pnMax += nMaxRarity;
+		}
+		#endif // __WEAPON_RARITY
 	}
 	else
 	{
@@ -1865,7 +1904,7 @@ BOOL AttackBySFX(CMover* pAttacker, SFXHIT_INFO& info)
 				pAttacker->DoApplySkill(pTarget, pSkillProp, pAddSkillProp, false, nParam, FALSE, FALSE);
 		}
 		else
-			Error("OnSfxHit : skill=%d¸¦ °¡ÁöÁö ¾ÊÀ½", info.dwSkill);
+			Error("OnSfxHit : skill=%dï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", info.dwSkill);
 	}
 	else
 		pTarget->m_pActMover->SendDamage(info.dwAtkFlags, pAttacker->GetId(), nParam);

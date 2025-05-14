@@ -277,6 +277,9 @@ public:
 		int nOk, int nError,
 		const char* szOperation, const char* szRecv );
 	BOOL	DoUseItemTarget_ItemLevelDown( CUser* pUser, CItemElem* pMaterial, CItemElem* pTarget );
+#ifdef __WEAPON_RARITY
+	BOOL	DoUseItemTarget_Rarity(CUser* pUser, CItemElem* pMaterial, CItemElem* pTarget, BOOL bCheck = FALSE);
+#endif // __WEAPON_RARITY
 
 #if __VER >= 12 // __LORD
 public:

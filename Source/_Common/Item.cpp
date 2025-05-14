@@ -73,6 +73,10 @@ CItemElem::CItemElem()
 #ifdef __MODEL_CHANGE
 	m_dwLookId = NULL_ID;
 #endif
+#ifdef __WEAPON_RARITY
+	m_nWeaponRarity = 0;
+#endif // __WEAPON_RARITY
+
 }
 
 CItemElem::~CItemElem()
@@ -141,6 +145,10 @@ CItemElem& CItemElem::operator = (CItemElem& ie)
 #ifdef __MODEL_CHANGE
 	m_dwLookId = ie.m_dwLookId;
 #endif
+
+#ifdef __WEAPON_RARITY
+	m_nWeaponRarity = ie.m_nWeaponRarity;
+#endif // __WEAPON_RARITY
 
 	return *this;
 }
@@ -739,6 +747,50 @@ BOOL	IsNeedTarget(ItemProp* pProp)
 {
 	return(pProp->dwExeTarget == EXT_ITEM);
 }
+
+#ifdef __WEAPON_RARITY
+BOOL IsValidRarityItem(DWORD dwIdIk3)
+{
+	switch (dwIdIk3)
+	{
+	case IK3_SWD:
+	case IK3_AXE:
+	case IK3_CHEERSTICK:
+	case IK3_KNUCKLEHAMMER:
+	case IK3_WAND:
+	case IK3_STAFF:
+	case IK3_THSWD:
+	case IK3_THAXE:
+	case IK3_YOYO:
+	case IK3_BOW:
+	case IK3_SHIELD:
+	case IK3_MAGICBARUNA:
+	case IK3_ZEMBARUNA:
+		return TRUE;
+		break;
+	default:
+		return FALSE;
+		break;
+	}
+	return FALSE;
+}
+BOOL IsValidRarityItem2(DWORD dwIdIk3)
+{
+	switch (dwIdIk3)
+	{
+	case IK3_HELMET:
+	case IK3_SUIT:
+	case IK3_GAUNTLET:
+	case IK3_BOOTS:
+		return TRUE;
+		break;
+	default:
+		return FALSE;
+		break;
+	}
+	return FALSE;
+}
+#endif // __WEAPON_RARITY
 
 BOOL CItemElem::IsEgg()
 {

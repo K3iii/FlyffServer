@@ -870,6 +870,9 @@ void CDbManager::SaveOneItem(CItemElem* pItemElem, ItemStruct* pItemStruct)
 #ifdef __MODEL_CHANGE
 			",%d"
 #endif // 
+#ifdef __WEAPON_RARITY
+			",%d"
+#endif // __WEAPON_RARITY
 
 			"/",
 			pItemElem->m_dwObjId, pItemElem->m_dwItemId,
@@ -882,6 +885,9 @@ void CDbManager::SaveOneItem(CItemElem* pItemElem, ItemStruct* pItemStruct)
 #ifdef __MODEL_CHANGE
 			, pItemElem->GetLook()
 #endif
+#ifdef __WEAPON_RARITY
+			, pItemElem->m_nWeaponRarity
+#endif // __WEAPON_RARITY
 		);
 
 		sprintf(pItemStruct->szExt, "%d,%I64d"

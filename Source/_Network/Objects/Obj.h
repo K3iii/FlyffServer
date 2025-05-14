@@ -185,6 +185,11 @@ public:
 
 	CPet* m_pPet;
 
+#ifdef __WEAPON_RARITY
+public:
+	short m_nWeaponRarity;
+#endif // __WEAPON_RARITY
+
 #ifdef __FL_PACKED_ITEMS
 private:
 	vector<CItemElem*> m_vecPackedItems;
