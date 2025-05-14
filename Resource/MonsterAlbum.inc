@@ -1,0 +1,187 @@
+Monsters		
+{	
+    MOB_ID MI_AIBATT2
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_MONSTERALBUM_AIBATT_PIECE
+        CHANCE_TO_OBTAIN = 30000000
+    }	
+
+    MOB_ID MI_MUSHPANG2
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_MONSTERALBUM_MUSHPANG_PIECE
+        CHANCE_TO_OBTAIN = 30000000
+    }
+
+    MOB_ID MI_PUKEPUKE2
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_MONSTERALBUM_PUKEPUKE_PIECE
+        CHANCE_TO_OBTAIN = 30000000
+    }
+
+    MOB_ID MI_PEAKYTURTLE2
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_MONSTERALBUM_PEAKYTURTLE_PIECE
+        CHANCE_TO_OBTAIN = 30000000
+    }
+
+    MOB_ID MI_DEMIAN2
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_MONSTERALBUM_DEMIAN_PIECE
+        CHANCE_TO_OBTAIN = 30000000
+    }
+
+    MOB_ID MI_DORIDOMA4
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 30000000
+    }
+
+    MOB_ID MI_LAWOLF2
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 30000000
+    }
+
+    MOB_ID MI_DRILLER4
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 30000000
+    }
+
+    MOB_ID MI_POPCRANK4
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 30000000
+    }
+
+    MOB_ID MI_ELDERGUARD4
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 30000000
+    }
+
+    MOB_ID MI_MRPUMPKIN1
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_MONSTERALBUM_MRPUMPKIN_PIECE
+        CHANCE_TO_OBTAIN = 500000000
+    }
+
+    MOB_ID MI_REDMANTIS1
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 500000000
+    }
+
+
+    MOB_ID MI_JACKTHEHAMMER1
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 500000000
+    }
+
+    MOB_ID MI_GIGGLEBOX1
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 500000000
+    }
+
+    MOB_ID MI_ROCKMUSCLE1
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 500000000
+    }
+
+    MOB_ID MI_HOBO1
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 500000000
+    }
+
+    MOB_ID MI_DUMBBULL1
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 500000000
+    }
+
+    MOB_ID MI_KERN1
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 500000000
+    }
+
+    MOB_ID MI_GLAPHAN1
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 500000000
+    }
+
+    MOB_ID MI_DUNYANGNYANG1
+    {
+        WORLD_ID = WI_WORLD_MADRIGAL
+        CARD_PIECE_ID = II_SYS_SYS_EVE_E_CARD
+        CHANCE_TO_OBTAIN = 500000000
+    }
+}	
+
+Bonuses
+{
+    UnlockedMobs 5
+    {
+        ItemRewards
+        {
+            II_SYS_TICKET_DARKRARTESIA_15 1 0
+            II_SYS_SYS_BP_SEASON2_01 5 1
+        }
+        StatRewards
+        {
+            DST_SPEED 200
+            DST_INT 150
+        }
+    }
+    UnlockedMobs 10
+    {
+        StatRewards
+        {
+            DST_STR 5
+            DST_STA 8
+            DST_DEX 6
+        }
+    }
+    UnlockedMobs 15
+    {
+        StatRewards
+        {
+            DST_PVP_DMG 3
+            DST_ATKPOWER_RATE 5
+        }
+    }
+    UnlockedMobs 20
+    {
+        ItemRewards
+        {
+            II_ARM_M_MSEAKINGLOOKCAP_BLACK 1 1
+            II_ARM_M_MSEAKINGLOOKUPPER_BLACK 1 1
+            II_ARM_M_MSEAKINGLOOKHAND_BLACK 1 1
+            II_ARM_M_MSEAKINGLOOKFOOT_BLACK 1 1
+        }
+    }
+}

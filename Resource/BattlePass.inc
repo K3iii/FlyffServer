@@ -1,0 +1,95 @@
+// Battle pass ID. It will save in database as "m_nLastBattlePassID" for every player. Each new Battle Pass here must have a new number (1, 2, 3, etc.)
+// In code it work like that: if current server-battle pass not the same with last battle pass of the player -> then this player will set to 0 level and 0 exp (nulled).
+// This is done so that players who participated in past battle passes can participate in all subsequent ones from the beginning.
+// If you not want to enable battle pass, then you can just comment //ADD_PASS. 
+ADD_PASS 2
+
+// Item that must be activated on the character (as a buff) so that player can gain experience and increase his battle pass levels. If you want to leave current battle pass "free for all", then just //REQUIRED_ITEM
+REQUIRED_ITEM 1
+
+// Date when battlepass is over (day month year hour:minute:sec)
+DATETIME_END 12 12 2023 18:30:00
+
+// Exp parameters. If you do some actions in game, you will get exp to go to the next level. Here you can set how much exp you will receive for every action.
+// You can set 0, then parameter will be disabled completely. So players will not receive any exp for this kind of action.
+// EXP_MOB working only for monsters which have same level or higher
+// EXP_BOSS working for all RANK_BOSS and RANK_SUPER regardless of the level difference
+// EXP_GW and EXP_SR will add exp for all participants of winning guild
+// Here is always can be added more conditions, for example: couple level-up, FFA kills and so on... Just ask me and we will discuss about that ^^
+EXP_MOB 30
+EXP_BOSS 300
+EXP_GW_KILL 1200
+EXP_GW_MVP 7500
+EXP_GW 10000
+EXP_SR 10000
+
+// Level parameters for bundles. If you will use an special items, you will get additional levels. NOT EXP!!! Here you can set how much levels you will receive for every bundle.
+LEVEL_BATTLE_PASS_BUNDLE_1 10
+LEVEL_BATTLE_PASS_BUNDLE_2 5
+LEVEL_BATTLE_PASS_BUNDLE_3 1
+
+// Levels. You can add as much levels you want
+// Example: ADD_LEVEL 15 II_WEA_SWO_WOODEN 1 0
+// ADD_LEVEL = codeword | 15 = the experience that must be gained to move to the next level | II_WEA_SWO_WOODEN = item ID | 1 = item Amount | 0 - binding (0 its no, 1 is yes)
+ADD_LEVEL 5000 II_GEN_FOO_ICE_ORANGEJUIICE 15 1
+ADD_LEVEL 5000 II_GEN_FOO_ICE_STRAWBERRYSHAKE 2 1
+ADD_LEVEL 5000 II_GEN_FOO_ICE_PINEAPPLECONE 2 0
+ADD_LEVEL 5000 II_GEN_FOO_ICE_BANANAJUJUBAR 2 1
+ADD_LEVEL 5000 II_GEN_FOO_ICE_FRUITJUICE 15 1
+ADD_LEVEL 7500 II_GEN_FOO_ICE_FRUITICEWATER 1 0 
+ADD_LEVEL 8000 II_GEN_FOO_ICE_FRUITPARFAIT 1 0
+ADD_LEVEL 8500 II_GEN_FOO_ICE_FRUITSHERBET 15 1
+ADD_LEVEL 9000 II_GEN_FOO_ICE_ICECREAMCAKE 2 1
+ADD_LEVEL 9500 II_GEN_FOO_ICE_FRUITPUNCH 2 1
+ADD_LEVEL 10000 II_GEN_FOO_INS_SUPERHOTDOG 2 1
+ADD_LEVEL 10000 II_GEN_FOO_INS_HODDUK 15 1
+ADD_LEVEL 10000 II_GEN_FOO_INS_KIMBAP 1 0 
+ADD_LEVEL 12000 II_GEN_FOO_INS_CHICKENSTICK 1 0
+ADD_LEVEL 5000 II_GEN_FOO_INS_STARCANDY 15 1
+ADD_LEVEL 5500 II_GEN_FOO_PIL_GRAY 2 1
+ADD_LEVEL 6000 II_GEN_FOO_PIL_YELLOW 2 0
+ADD_LEVEL 6500 II_GEN_FOO_PIL_BLUE 2 1
+ADD_LEVEL 7000 II_GEN_FOO_PIL_RED 15 1
+ADD_LEVEL 7500 II_GEN_FOO_PIL_GOLD 1 0 
+ADD_LEVEL 8000 II_GEN_FOO_COO_DDUKGUKHOT 1 0
+ADD_LEVEL 8500 II_GEN_FOO_COO_DDUKGUKFRESH 15 1
+ADD_LEVEL 9000 II_GEN_FOO_COO_DDUKGUKSWEET 2 1
+ADD_LEVEL 9500 II_GEN_GEM_GEM_MOP 2 1
+ADD_LEVEL 10000 II_GEN_GEM_GEM_POPORAM 2 1
+ADD_LEVEL 10000 II_GEN_GEM_GEM_SLAIN 15 1
+ADD_LEVEL 10000 II_GEN_GEM_GEM_TARINROOT 1 0 
+ADD_LEVEL 12000 II_GEN_GEM_GEM_STARSTONE 1 0
+ADD_LEVEL 5000 II_GEN_GEM_GEM_GOLDENWING 15 1
+ADD_LEVEL 5500 II_GEN_GEM_GEM_BLUEHONEY 2 1
+ADD_LEVEL 6000 II_GEN_GEM_GEM_CARDRIN 2 0
+ADD_LEVEL 6500 II_GEN_GEM_GEM_FURIOUSMATCH 2 1
+ADD_LEVEL 7000 II_GEN_GEM_GEM_MOONSTONE 15 1
+ADD_LEVEL 7500 II_GEN_GEM_GEM_KALIN 1 0 
+ADD_LEVEL 8000 II_GEN_GEM_GEM_GOLDENFIST 1 0
+ADD_LEVEL 8500 II_GEN_GEM_GEM_ORBRIN 15 1
+ADD_LEVEL 9000 II_GEN_GEM_GEM_GOLDENCUP 2 1
+ADD_LEVEL 9500 II_GEN_GEM_GEM_CLOCKHEART 2 1
+ADD_LEVEL 10000 II_GEN_GEM_GEM_MIADOLL 2 1
+ADD_LEVEL 10000 II_GEN_GEM_GEM_BEARBALL 15 1
+ADD_LEVEL 10000 II_GEN_GEM_GEM_AMPERE 1 0 
+ADD_LEVEL 12000 II_GEN_GEM_GEM_TOMBMARBLE 1 0
+ADD_LEVEL 5000 II_GEN_GEM_GEM_STEAMTEAR 15 1
+ADD_LEVEL 5500 II_GEN_GEM_GEM_PEAKYRIND 2 1
+ADD_LEVEL 6000 II_GEN_GEM_GEM_HAMMARBLE 2 0
+ADD_LEVEL 6500 II_GEN_GEM_GEM_GIGGLANDE 2 1
+ADD_LEVEL 7000 II_GEN_GEM_GEM_BOBAND 15 1
+ADD_LEVEL 7500 II_GEN_GEM_GEM_DUMBLING 1 0 
+ADD_LEVEL 8000 II_GEN_GEM_GEM_TOMA 1 0
+ADD_LEVEL 8500 II_GEN_GEM_GEM_KNIGHTLER 15 1
+ADD_LEVEL 9000 II_GEN_GEM_GEM_WHEESHOE 2 1
+ADD_LEVEL 9500 II_GEN_GEM_GEM_DROIL 2 1
+ADD_LEVEL 10000 II_GEN_GEM_GEM_GUARDIEYE 2 1
+ADD_LEVEL 10000 II_SYS_SYS_SCR_HOLY 15 1
+ADD_LEVEL 10000 II_SYS_VIS_LV3_KNIGHT 1 0 
+ADD_LEVEL 12000 II_ARM_S_CLO_MAS_SUNGLASS01 1 0
+ADD_LEVEL 5000 II_CHR_FOO_COO_REMANTIS 15 1
+ADD_LEVEL 5500 II_SYS_SYS_EVE_GINGERBRADE01 2 1
+ADD_LEVEL 6000 II_SYS_SYS_EVE_CHOCOLATE08 2 0
+ADD_LEVEL 5500 II_SYS_SYS_EVE_GINGERBRADE01 2 1
+ADD_LEVEL 6000 II_SYS_SYS_EVE_CHOCOLATE08 2 0
+ADD_LEVEL 6500 II_SYS_SYS_EVE_CHRISTMASCAKE01 2 1

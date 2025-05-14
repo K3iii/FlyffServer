@@ -1,0 +1,6 @@
+// PCBang.cpp: implementation of the CPCBang class.
+
+////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "PCBang.h"

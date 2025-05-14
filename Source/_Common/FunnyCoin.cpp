@@ -1,0 +1,5 @@
+// FunnyCoin.cpp: implementation of the CFunnyCoin class.
+
+////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"

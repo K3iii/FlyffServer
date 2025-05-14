@@ -1,0 +1,4 @@
+#ifndef __WNDMESSENGERSEARCH__H
+#define __WNDMESSENGERSEARCH__H
+
+#endif

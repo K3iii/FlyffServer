@@ -1,0 +1,4 @@
+#ifndef __WNDADMINCREATEITEM__H
+#define __WNDADMINCREATEITEM__H
+
+#endif

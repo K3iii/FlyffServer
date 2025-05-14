@@ -1,0 +1,6 @@
+// Quiz.cpp: implementation of the CQuiz class.
+
+////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "Quiz.h"
