@@ -275,7 +275,7 @@ void	CModelObject::TakeOffParts(int nParts)
 int		CModelObject::LoadBone(LPCTSTR szFileName)
 {
 	if (m_pBone)
-		Error("CModelObject::LoadBone ; ÀÌ¹Ì º»ÀÌ ·ÎµùµÇ¾î ÀÖ´Ù. 0x%08x", (int)m_pBone);
+		Error("CModelObject::LoadBone ; ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½Ç¾ï¿½ ï¿½Ö´ï¿½. 0x%08x", (int)m_pBone);
 
 
 	m_pBone = g_BonesMng.LoadBone(szFileName);
@@ -283,7 +283,7 @@ int		CModelObject::LoadBone(LPCTSTR szFileName)
 
 	if (m_pBone == NULL)
 	{
-		LPCTSTR szStr = Error("%s : Ã£À» ¼ö ¾øÀ½", szFileName);
+		LPCTSTR szStr = Error("%s : Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", szFileName);
 		//ADDERRORMSG( szStr );
 		return FAIL;
 	}
@@ -291,7 +291,7 @@ int		CModelObject::LoadBone(LPCTSTR szFileName)
 	m_bSkin = TRUE;
 #ifdef _DEBUG
 	if (m_mUpdateBone)
-		Error("CModelObject::LoadBone : %s ÀÌ¹Ì ÀÐ¾ú´Âµ¥ ¶Ç ÀÐÀº°Í °°´Ù.", szFileName);
+		Error("CModelObject::LoadBone : %s ï¿½Ì¹ï¿½ ï¿½Ð¾ï¿½ï¿½Âµï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.", szFileName);
 #endif
 
 
@@ -318,7 +318,7 @@ int		CModelObject::LoadMotion(LPCTSTR szFileName)
 
 	if (m_pBone == NULL)
 	{
-		Error("%s : º»À» ·ÎµùÇÏÁö ¾Ê°í ¸ð¼ÇÀ» ÀÐÀ½", szFileName);
+		Error("%s : ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", szFileName);
 		return FAIL;
 	}
 	m_pMotionOld = m_pMotion;
@@ -372,8 +372,8 @@ int	CModelObject::MovePart(int nDstPart, int nSrcPart)
 	if (pDestPart->m_pObject3D)
 		Error("CModelObject::MovePart : m_Element[%d].m_pObject3D == 0x%08x", nDstPart, (int)pDestPart->m_pObject3D);
 
-	memcpy(pDestPart, pSrcPart, sizeof(O3D_ELEMENT));	// Ä«ÇÇÇÏ°í
-	memset(pSrcPart, 0, sizeof(*pSrcPart));		// ¼Ò½ºÃøÀº Å¬¸®¾î.	
+	memcpy(pDestPart, pSrcPart, sizeof(O3D_ELEMENT));	// Ä«ï¿½ï¿½ï¿½Ï°ï¿½
+	memset(pSrcPart, 0, sizeof(*pSrcPart));		// ï¿½Ò½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½.	
 	return 1;
 }
 
@@ -388,7 +388,7 @@ int		CModelObject::LoadElement(LPCTSTR szFileName, int nParts)
 
 	if (nParts < 0)
 	{
-		Error("CModelObject::LoadElement : nParts ¿¡·¯ - nParts = %d, %s", nParts, szFileName);
+		Error("CModelObject::LoadElement : nParts ï¿½ï¿½ï¿½ï¿½ - nParts = %d, %s", nParts, szFileName);
 		return FAIL;
 	}
 
@@ -406,7 +406,7 @@ int		CModelObject::LoadElement(LPCTSTR szFileName, int nParts)
 
 	if (FAILED(hr = m_pd3dDevice->TestCooperativeLevel()))
 	{
-		LPCTSTR szErr = Error("%s µð¹ÙÀÌ½º½ÇÆÐ %08x", szFileName, (int)hr);
+		LPCTSTR szErr = Error("%s ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ %08x", szFileName, (int)hr);
 		//ADDERRORMSG( szErr );
 	}
 #endif
@@ -417,7 +417,7 @@ int		CModelObject::LoadElement(LPCTSTR szFileName, int nParts)
 #endif
 	if (pObject3D == NULL)
 	{
-		LPCTSTR szStr = Error("%s : Ã£À» ¼ö ¾øÀ½", MakePath(DIR_MODEL, szFileName));
+		LPCTSTR szStr = Error("%s : Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", MakePath(DIR_MODEL, szFileName));
 		//ADDERRORMSG( szStr );
 		return FAIL;
 	}
@@ -463,7 +463,7 @@ int		CModelObject::LoadElement(LPCTSTR szFileName, int nParts)
 
 	if (pObject3D->GetGMOBJECT() == NULL)
 	{
-		LPCTSTR szStr = Error("CModelObject::LoadElement¿¡¼­ Æ¨±è : ÀÐÀº ÆÄÀÏ¸í %s", MakePath(DIR_MODEL, szFileName));
+		LPCTSTR szStr = Error("CModelObject::LoadElementï¿½ï¿½ï¿½ï¿½ Æ¨ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ %s", MakePath(DIR_MODEL, szFileName));
 		//ADDERRORMSG( szStr );
 		return FAIL;
 	}
@@ -478,7 +478,7 @@ int		CModelObject::LoadElement(LPCTSTR szFileName, int nParts)
 		if (pObject3D->GetMaxFrame())
 			if (m_nFrameMax != pObject3D->GetMaxFrame())
 			{
-				LPCTSTR szErr = Error("CModelObject::LoadElement - %sÀÇ MaxFrame(%d)°ú ÀÌÀü¿¡ ÀÐÀº MaxFrame(%d)ÀÌ ´Ù¸£´Ù.", szFileName, pObject3D->GetMaxFrame(), m_nFrameMax);
+				//LPCTSTR szErr = Error("CModelObject::LoadElement - %sï¿½ï¿½ MaxFrame(%d)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ MaxFrame(%d)ï¿½ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½.", szFileName, pObject3D->GetMaxFrame(), m_nFrameMax);
 				//ADDERRORMSG( szErr );
 			}
 	}
@@ -585,7 +585,7 @@ int CModelObject::LoadClonedElement(LPCTSTR szFileName)
 		if (pObject3D->GetMaxFrame())
 			if (m_nFrameMax != pObject3D->GetMaxFrame())
 			{
-				LPCTSTR szErr = Error("CModelObject::LoadElement - %sÀÇ MaxFrame(%d)°ú ÀÌÀü¿¡ ÀÐÀº MaxFrame(%d)ÀÌ ´Ù¸£´Ù.", szFileName, pObject3D->GetMaxFrame(), m_nFrameMax);
+				LPCTSTR szErr = Error("CModelObject::LoadElement - %sï¿½ï¿½ MaxFrame(%d)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ MaxFrame(%d)ï¿½ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½.", szFileName, pObject3D->GetMaxFrame(), m_nFrameMax);
 				//ADDERRORMSG( szErr );
 			}
 	}
@@ -725,9 +725,9 @@ int		CModelObject::Render(LPDIRECT3DDEVICE9 pd3dDevice, const D3DXMATRIX* mWorld
 
 #ifdef	_DEBUG
 	if (m_mUpdateBone && g_pSkiningVS == NULL)
-		Error("CMyD3DApplication::RestoreDeviceObjects()¿¡ CreateSkiningVS()¸¦ È£ÃâÇÏ½Ã¿À.\r\nCMyD3DApplication::InvalidateDeviceObjects()¿¡´Â DeleteSkiningVS()¸¦ È£ÃâÇÏ½Ã¿À.\r\nÈ¤Àº *.vshÆÄÀÏÀ» ÀÐÁö ¸øÇß´Ù.");
+		Error("CMyD3DApplication::RestoreDeviceObjects()ï¿½ï¿½ CreateSkiningVS()ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ï½Ã¿ï¿½.\r\nCMyD3DApplication::InvalidateDeviceObjects()ï¿½ï¿½ï¿½ï¿½ DeleteSkiningVS()ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ï½Ã¿ï¿½.\r\nÈ¤ï¿½ï¿½ *.vshï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß´ï¿½.");
 	if (m_nLoop == 0)
-		Error("°æ°í : %s : CModelObject::m_nLoop°¡ ÁöÁ¤µÇÁö ¾Ê¾Ò´Ù.", m_pMotion->m_szName);
+		Error("ï¿½ï¿½ï¿½ : %s : CModelObject::m_nLoopï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò´ï¿½.", m_pMotion->m_szName);
 #endif
 
 	if (m_pMotion)
@@ -1532,7 +1532,7 @@ void	CSwordForce::Add(D3DXVECTOR3 v1, D3DXVECTOR3 v2)
 {
 	if (m_nMaxVertex >= MAX_SF_SWDFORCE)
 	{
-		LPCTSTR szErr = Error("SWDForceAdd : ¹üÀ§ ÃÊ°ú %d", m_nMaxVertex);
+		LPCTSTR szErr = Error("SWDForceAdd : ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ %d", m_nMaxVertex);
 		//ADDERRORMSG( szErr );
 		return;
 	}
