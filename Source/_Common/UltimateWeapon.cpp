@@ -89,7 +89,7 @@ BOOL CUltimateWeapon::Load_GemAbility()
 				MakeGemItem.dwItemID = CScript::GetDefineNum( s.Token );
 				if( MakeGemItem.dwItemID == (DWORD)-1 )		// cr
 				{
-					Error( "UltimateWeapon::Load_UltimateWeapon() ¾ÆÀÌÅÛÀÌ ¾ø´Â°ÍÀ» ¼³Á¤ÇßÀ½" );
+					Error( "UltimateWeapon::Load_UltimateWeapon() ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" );
 					return FALSE;
 				}
 				MakeGemItem.nMinLevel = s.GetNumber();
@@ -199,7 +199,7 @@ int CUltimateWeapon::MakeGem( CUser* pUser, OBJID objItemId, int & nNum )
 	if( pItemElem->GetProp()->dwItemKind1 != IK1_WEAPON )
 	{
 #ifdef __INTERNALSERVER
-		pUser->AddText( "¹«±â°¡ ¾Æ´Ô." );
+		pUser->AddText( "ï¿½ï¿½ï¿½â°¡ ï¿½Æ´ï¿½." );
 #endif // __INTERNALSERVER
 		return ULTIMATE_CANCEL;
 	}
@@ -208,7 +208,7 @@ int CUltimateWeapon::MakeGem( CUser* pUser, OBJID objItemId, int & nNum )
 		pItemElem->GetProp()->dwReferStat1 != WEAPON_UNIQUE )
 	{
 #ifdef __INTERNALSERVER
-	pUser->AddText( "dwReferStat1 °ªÀÌ WEAPON_GENERAL, WEAPON_UNIQUE °¡ ¾Æ´Ô." );
+	pUser->AddText( "dwReferStat1 ï¿½ï¿½ï¿½ï¿½ WEAPON_GENERAL, WEAPON_UNIQUE ï¿½ï¿½ ï¿½Æ´ï¿½." );
 #endif // __INTERNALSERVER
 		return ULTIMATE_CANCEL;
 	}
@@ -511,7 +511,7 @@ int CUltimateWeapon::EnchantWeapon( CUser* pUser, OBJID objItem, OBJID objItemGe
 	}
 
 	int pAbilityOpt = pItemElemWeapon->GetAbilityOption();
-	if( (pAbilityOpt+1) > 10 )
+	if( (pAbilityOpt+1) > 20 )
 	{
 		pUser->AddDefinedText( TID_UPGRADE_MAXOVER , "" );
 		return ULTIMATE_CANCEL;
@@ -590,7 +590,7 @@ BYTE CUltimateWeapon::SmeltSafetyUltimate( CUser* pUser, CItemElem* pItemMain, C
 	if( pItemProtScr->GetProp()->dwID != II_SYS_SYS_SCR_SMELPROT3)
 		return 0;
 
-	if( pItemMain->GetAbilityOption() >= 10 )
+	if( pItemMain->GetAbilityOption() >= 20 )
 		return 3;
 
 #ifndef __FL_FIX_USELESS_LOGS
@@ -636,8 +636,17 @@ BYTE CUltimateWeapon::SmeltSafetyUltimate( CUser* pUser, CItemElem* pItemMain, C
 			g_UserMng.AddCreateSfxObj( ( CMover * )pUser, XI_INT_SUCCESS, pUser->GetPos().x, pUser->GetPos().y, pUser->GetPos().z );
 
 		pUser->UpdateItem( (BYTE)pItemMain->m_dwObjId, UI_AO, pItemMain->GetAbilityOption() + 1 );
-		if( pItemMain->GetAbilityOption() > 5 )
-			pUser->UpdateItem( (BYTE)pItemMain->m_dwObjId, UI_ULTIMATE_PIERCING_SIZE, pItemMain->GetAbilityOption() - 5 );
+		// if( pItemMain->GetAbilityOption() > 5 )
+		// 	pUser->UpdateItem( (BYTE)pItemMain->m_dwObjId, UI_ULTIMATE_PIERCING_SIZE, pItemMain->GetAbilityOption() - 5 );
+		int nPiercingCount = 0;
+		int nAbility = pItemMain->GetAbilityOption();
+		if (nAbility >= 10) nPiercingCount++;
+		if (nAbility >= 13) nPiercingCount++;
+		if (nAbility >= 15) nPiercingCount++;
+		if (nAbility >= 18) nPiercingCount++;
+		if (nAbility >= 20) nPiercingCount++;
+
+		pUser->UpdateItem((BYTE)pItemMain->m_dwObjId, UI_ULTIMATE_PIERCING_SIZE, nPiercingCount);
 
 #ifndef __FL_FIX_USELESS_LOGS
 		aLogItem.RecvName = "ULTIMATE_ENC_SUC_SMELTSAFETY";

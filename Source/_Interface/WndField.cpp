@@ -15597,6 +15597,9 @@ int CWndSmeltSafety::GetDefaultMaxSmeltValue(void)
 	{
 	case WND_NORMAL:
 	{
+		if(m_pItemElem->GetProp()->dwReferStat1 == WEAPON_ULTIMATE)
+			nDefaultMaxSmeltValue = 20;
+		else
 		nDefaultMaxSmeltValue = 10;
 		break;
 	}

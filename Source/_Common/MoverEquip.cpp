@@ -1438,9 +1438,6 @@ void CMover::SetDestParamEquip(ItemProp* pItemProp, CItemElem* pItemElem, BOOL b
 			 int nTotalBonus = nFlatBonus; // You can add scaling here if you want
 
             // If you want to add scaling based on something, e.g. weapon level, add to nTotalBonus
-#ifdef __WORLDSERVER
-WriteLog("Applying flat bonus: %s, rarity=%d, STR+%d", pItemProp->szName, pItemElem->m_nWeaponRarity, nTotalBonus);
-#endif
             // Apply to all stats at once, like DST_STAT_ALLUP
             SetDestParam(DST_STR, nTotalBonus, NULL_CHGPARAM);
             SetDestParam(DST_DEX, nTotalBonus, NULL_CHGPARAM);
