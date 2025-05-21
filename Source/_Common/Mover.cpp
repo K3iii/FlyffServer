@@ -4908,16 +4908,16 @@ BOOL CMover::DropItem(CMover* pAttacker)
 								if (IsValidRarityItem(itemElem.GetProp()->dwItemKind3) || IsValidRarityItem2(itemElem.GetProp()->dwItemKind3))
 								{
 									BOOL bCheck = FALSE;
-									//if (!bCheck && xRandom(0, 10000) < 30)
-									//{
-									//	pItemElem->m_nWeaponRarity = 5;
-									//	bCheck = TRUE;
-									//}
-									//if (!bCheck && xRandom(0, 10000) < 50)
-									//{
-									//	pItemElem->m_nWeaponRarity = 4;
-									//	bCheck = TRUE;
-									//}
+									if (!bCheck && xRandom(0, 10000) < 10)
+									{
+										itemElem.m_nWeaponRarity = 5;
+										bCheck = TRUE;
+									}
+									if (!bCheck && xRandom(0, 10000) < 15)
+									{
+										itemElem.m_nWeaponRarity = 4;
+										bCheck = TRUE;
+									}
 									if (!bCheck && xRandom(0, 10000) < 20)
 									{
 										itemElem.m_nWeaponRarity = 3;
@@ -4973,16 +4973,16 @@ BOOL CMover::DropItem(CMover* pAttacker)
 							if (IsValidRarityItem(pItemElem->GetProp()->dwItemKind3) || IsValidRarityItem2(pItemElem->GetProp()->dwItemKind3))
 							{
 								BOOL bCheck = FALSE;
-								//if (!bCheck && xRandom(0, 10000) < 30)
-								//{
-								//	pItemElem->m_nWeaponRarity = 5;
-								//	bCheck = TRUE;
-								//}
-								//if (!bCheck && xRandom(0, 10000) < 50)
-								//{
-								//	pItemElem->m_nWeaponRarity = 4;
-								//	bCheck = TRUE;
-								//}
+								if (!bCheck && xRandom(0, 10000) < 10)
+								{
+									pItemElem->m_nWeaponRarity = 5;
+									bCheck = TRUE;
+								}
+								if (!bCheck && xRandom(0, 10000) < 15)
+								{
+									pItemElem->m_nWeaponRarity = 4;
+									bCheck = TRUE;
+								}
 								if (!bCheck && xRandom(0, 10000) < 20)
 								{
 									pItemElem->m_nWeaponRarity = 3;
@@ -5398,58 +5398,58 @@ BOOL CMover::EndMotion()
 BOOL CMover::IsBullet(ItemProp * pItemProp)
 {
 
-	if (pItemProp->dwLinkKindBullet != NULL_ID)
-	{
-		DWORD dwTip = TID_TIP_NEEDSKILLITEM;
-		if (pItemProp->dwItemKind3 == IK3_BOW || pItemProp->dwLinkKind == IK3_BOW)
-		{
-			dwTip = TID_TIP_NEEDSATTACKITEM;
-		}
+// 	if (pItemProp->dwLinkKindBullet != NULL_ID)
+// 	{
+// 		DWORD dwTip = TID_TIP_NEEDSKILLITEM;
+// 		if (pItemProp->dwItemKind3 == IK3_BOW || pItemProp->dwLinkKind == IK3_BOW)
+// 		{
+// 			dwTip = TID_TIP_NEEDSATTACKITEM;
+// 		}
 
-		ItemProp* pProp = GetActiveHandItemProp(PARTS_BULLET);
-		if (pProp)
-		{
-			if (pProp->dwItemKind2 != pItemProp->dwLinkKindBullet)
-			{
-#ifdef __CLIENT
-				g_WndMng.PutString(prj.GetText(dwTip), NULL, prj.GetTextColor(dwTip));
-				((CWndWorld*)g_WndMng.m_pWndWorld)->m_bAutoAttack = FALSE;
-#endif // __CLIENT
-#ifdef __WORLDSERVER
-				((CUser*)this)->AddDefinedText(dwTip, "");
-#endif // __WORLDSERVER
-				return FALSE;
-			}
-		}
-		else
-		{
-#ifdef __CLIENT
-			g_WndMng.PutString(prj.GetText(dwTip), NULL, prj.GetTextColor(dwTip));
-#endif // __CLIENT
-#ifdef __WORLDSERVER
-			((CUser*)this)->AddDefinedText(dwTip, "");
-#endif // __WORLDSERVER
-			return FALSE;
-		}
-	}
+// 		ItemProp* pProp = GetActiveHandItemProp(PARTS_BULLET);
+// 		if (pProp)
+// 		{
+// 			if (pProp->dwItemKind2 != pItemProp->dwLinkKindBullet)
+// 			{
+// #ifdef __CLIENT
+// 				g_WndMng.PutString(prj.GetText(dwTip), NULL, prj.GetTextColor(dwTip));
+// 				((CWndWorld*)g_WndMng.m_pWndWorld)->m_bAutoAttack = FALSE;
+// #endif // __CLIENT
+// #ifdef __WORLDSERVER
+// 				((CUser*)this)->AddDefinedText(dwTip, "");
+// #endif // __WORLDSERVER
+// 				return FALSE;
+// 			}
+// 		}
+// 		else
+// 		{
+// #ifdef __CLIENT
+// 			g_WndMng.PutString(prj.GetText(dwTip), NULL, prj.GetTextColor(dwTip));
+// #endif // __CLIENT
+// #ifdef __WORLDSERVER
+// 			((CUser*)this)->AddDefinedText(dwTip, "");
+// #endif // __WORLDSERVER
+// 			return FALSE;
+// 		}
+// 	}
 	return TRUE;
 }
 
 #ifdef __WORLDSERVER
 void CMover::ArrowDown()
 {
-	if (IsNPC())
-		return;
+	// if (IsNPC())
+	// 	return;
 
-	CItemElem* pItemElem = m_Inventory.GetEquip(PARTS_BULLET);
-	if (!IsUsableItem(pItemElem))
-		return;
+	// CItemElem* pItemElem = m_Inventory.GetEquip(PARTS_BULLET);
+	// if (!IsUsableItem(pItemElem))
+	// 	return;
 
-	int nNewNum = pItemElem->m_nItemNum - 1;
-	if (nNewNum <= 0)
-		DoEquipItem(pItemElem);
+	// int nNewNum = pItemElem->m_nItemNum - 1;
+	// if (nNewNum <= 0)
+	// 	DoEquipItem(pItemElem);
 
-	RemoveItem((BYTE)(pItemElem->m_dwObjId), 1);
+	// RemoveItem((BYTE)(pItemElem->m_dwObjId), 1);
 }
 #endif // __WORLDSERVER
 

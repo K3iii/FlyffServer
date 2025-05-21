@@ -119,14 +119,14 @@ int	CMover::GetQueueCastingTime()
 			ItemProp* pSkillProp = pSkill->GetProp();
 			if (!(pSkillProp))
 			{
-				Error("%s. ½ºÅ³(%d)ÀÇ ÇÁ·ÎÆÛÆ¼°¡ ¾ø´Ù.", m_szName, pSkill->dwSkill);
+				Error("%s. ï¿½ï¿½Å³(%d)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.", m_szName, pSkill->dwSkill);
 				return FALSE;
 			}
 
 			AddSkillProp* pAddSkillProp = prj.GetAddSkillProp(pSkillProp->dwSubDefine, pSkill->dwLevel);
 			if (!(pAddSkillProp))
 			{
-				Error("%s. ¾Öµå½ºÅ³(%d)ÀÇ ÇÁ·ÎÆÛÆ¼°¡ ¾ø´Ù.", m_szName, pSkill->dwSkill);
+				Error("%s. ï¿½Öµå½ºÅ³(%d)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.", m_szName, pSkill->dwSkill);
 				return FALSE;
 			}
 
@@ -303,7 +303,7 @@ BOOL	CMover::DoUseSkill(int nType, int nIdx, OBJID idFocusObj, SKILLUSETYPE sutT
 		LPSKILL pSkill = GetSkill(nType, nIdx);
 		if (pSkill == NULL)
 		{
-			Error("CMover::DoUseSkill : %s´Â nIdx¿¡ ½ºÅ³À» °¡Áö°í ÀÖÁö ¾Ê´Ù. %d", m_szName, nIdx);
+			Error("CMover::DoUseSkill : %sï¿½ï¿½ nIdxï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½. %d", m_szName, nIdx);
 			return FALSE;
 		}
 		dwSkill = pSkill->dwSkill;
@@ -503,7 +503,7 @@ BOOL CMover::DoUseSkill(DWORD dwSkill, int nLevel, OBJID idFocusObj, SKILLUSETYP
 
 	MoverProp* pMoverProp = pTarget->GetProp();
 	if (pMoverProp == NULL)
-		Error("DoUseSkill : %s , Å¸°Ù %s ÀÇ ÇÁ·ÎÆÛÆ¼°¡ ¾ø´Ù", m_szName, pTarget->m_szName);
+		Error("DoUseSkill : %s , Å¸ï¿½ï¿½ %s ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", m_szName, pTarget->m_szName);
 
 	if (pTarget != this)
 	{
@@ -958,12 +958,12 @@ BOOL CMover::DoUseSkill(DWORD dwSkill, int nLevel, OBJID idFocusObj, SKILLUSETYP
 		}
 #endif
 
-		if (pSkillProp->dwLinkKindBullet != NULL_ID)
-		{
-			CItemElem* pItemElem = GetEquipItem(PARTS_BULLET);
-			if (pItemElem)
-				ArrowDown();
-		}
+		// if (pSkillProp->dwLinkKindBullet != NULL_ID)
+		// {
+		// 	CItemElem* pItemElem = GetEquipItem(PARTS_BULLET);
+		// 	if (pItemElem)
+		// 		ArrowDown();
+		// }
 
 		if (pSkillProp->nEvildoing < 0)
 		{
@@ -1148,7 +1148,7 @@ void	CMover::OnEndSkillState(DWORD dwSkill, DWORD dwLevel)
 {
 	if (dwSkill < 0 || (int)(dwSkill) > prj.m_aPropSkill.GetSize())
 	{
-		Error("OnEndSkillState : ½ºÅ³ÀÇ ¹üÀ§¸¦ ³Ñ¾î¼¶. %d", dwSkill);
+		Error("OnEndSkillState : ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾î¼¶. %d", dwSkill);
 		return;
 	}
 	ItemProp* pSkillProp = NULL;
@@ -2865,11 +2865,11 @@ int	 CMover::DoAttackRange(CObj * pTargetObj, DWORD dwItemID, int idSfxHit)
 		pItemProp = GetActiveHandItemProp();
 		nPower = dwItemID;
 
-#ifdef __WORLDSERVER
-		CItemElem* pItemElem = m_Inventory.GetEquip(PARTS_BULLET);
-		if (pItemElem == NULL || pItemElem->GetProp()->dwItemKind3 != IK3_ARROW)
-			return -1;
-#endif 
+// #ifdef __WORLDSERVER
+// 		CItemElem* pItemElem = m_Inventory.GetEquip(PARTS_BULLET);
+// 		if (pItemElem == NULL || pItemElem->GetProp()->dwItemKind3 != IK3_ARROW)
+// 			return -1;
+// #endif 
 	}
 	else
 	{
@@ -2920,7 +2920,7 @@ int	 CMover::DoAttackRange(CObj * pTargetObj, DWORD dwItemID, int idSfxHit)
 
 #ifdef __WORLDSERVER
 		g_UserMng.AddRangeAttack(this, idTarget, dwItemID, idSfxHit);
-		ArrowDown();
+		// ArrowDown();
 #else
 		if (IsActiveMover())
 			g_DPlay.SendRangeAttack(((CCtrl*)pTargetObj)->GetId(), dwItemID, m_idSfxHit);
@@ -3187,7 +3187,7 @@ void	CMover::SendDamageAround(int nDmgType, CMover * pAttacker, int nApplyType, 
 		pProp = prj.GetSkillProp(nAttackID);
 		if (pProp == NULL)
 		{
-			Error("CMover::SendDamageAround : %s. ½ºÅ³(%d)ÀÇ ÇÁ·ÎÆÛÆ¼°¡ ¾÷´Ù.", m_szName, nAttackID);
+			Error("CMover::SendDamageAround : %s. ï¿½ï¿½Å³(%d)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.", m_szName, nAttackID);
 			return;	// property not found
 		}
 	}
@@ -3196,7 +3196,7 @@ void	CMover::SendDamageAround(int nDmgType, CMover * pAttacker, int nApplyType, 
 		pProp = prj.GetItemProp(nAttackID);
 		if (pProp == NULL)
 		{
-			Error("CMover::SendDamageAround : %s. ¾ÆÀÌÅÛ(%d)ÀÇ ÇÁ·ÎÆÛÆ¼°¡ ¾÷´Ù.", m_szName, nAttackID);
+			Error("CMover::SendDamageAround : %s. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(%d)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.", m_szName, nAttackID);
 			return;	// property not found
 		}
 	}

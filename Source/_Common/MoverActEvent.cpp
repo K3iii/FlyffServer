@@ -378,7 +378,7 @@ void	CMover::SetCoolTime(AddSkillProp* pAddSkillProp, LPCTSTR szCall)
 	int nIdx = GetSkillIdx(pAddSkillProp->dwName);
 
 	if (nIdx < 0 || nIdx >= MAX_SKILL_JOB)
-		Error("szCall SetCoolTime : %d %d½ºÅ³À» Ã£À» ¼ö ¾øÀ½ %s", nIdx, pAddSkillProp->dwName, GetName());
+		Error("szCall SetCoolTime : %d %dï¿½ï¿½Å³ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ %s", nIdx, pAddSkillProp->dwName, GetName());
 	else
 		m_tmReUseDelay[nIdx] = pAddSkillProp->dwCooldown + timeGetTime();
 }
@@ -388,7 +388,7 @@ void	CMover::SetCoolTime(ItemProp* pSkillProp, LPCTSTR szCall)
 	int nIdx = GetSkillIdx(pSkillProp->dwID);
 
 	if (nIdx < 0 || nIdx >= MAX_SKILL_JOB)
-		Error("szCall SetCoolTime : %d %d½ºÅ³À» Ã£À» ¼ö ¾øÀ½ %s", nIdx, pSkillProp->dwID, GetName());
+		Error("szCall SetCoolTime : %d %dï¿½ï¿½Å³ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ %s", nIdx, pSkillProp->dwID, GetName());
 	else
 		m_tmReUseDelay[nIdx] = pSkillProp->dwSkillReady + timeGetTime();
 }
@@ -414,7 +414,7 @@ BOOL CMover::OnMagicSkill(int nType, int nCount)
 	BOOL bRet = GetSkillProp(&pSkillProp, &pAddSkillProp, nSkill, dwLevel, "CMover::OnMagicSkill");
 	if (bRet == FALSE)
 	{
-		Error("OnMagicSkill : ½ºÅ³ÇÁ·ÓÀÐ±â ½ÇÆÐÇÔ. ÇöÀçÁøÇàÁßÀÎ Motion=%d %d", m_dwMotion, dwLevel);
+		Error("OnMagicSkill : ï¿½ï¿½Å³ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Motion=%d %d", m_dwMotion, dwLevel);
 		return FALSE;
 	}
 
@@ -591,12 +591,14 @@ BOOL	CMover::OnAttackRange()
 
 	DWORD dwSfxObj = pItemProp->dwSfxObj2;
 
-	ItemProp* pPropBulet = GetActiveHandItemProp(PARTS_BULLET);
-	if (pPropBulet && pPropBulet->dwSfxObj2 != NULL_ID)
-		dwSfxObj = pPropBulet->dwSfxObj2;
+	// ItemProp* pPropBulet = GetActiveHandItemProp(PARTS_BULLET);
+	// if (pPropBulet && pPropBulet->dwSfxObj2 != NULL_ID)
+	// 	dwSfxObj = pPropBulet->dwSfxObj2;
+	
 
-	if (dwSfxObj == NULL_ID)
-		return FALSE;
+	// if (dwSfxObj == NULL_ID)
+	// 	return FALSE;
+	
 
 	D3DXVECTOR3 vPosDest = pHit->GetPos() + D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	D3DXVECTOR3 vPosSrc = GetPos() + D3DXVECTOR3(0.0f, 1.0f, 0.0f);
@@ -609,9 +611,9 @@ BOOL	CMover::OnAttackRange()
 	{
 #ifdef __CLIENT
 		if (IsActiveMover())
-			pSfx = CreateSfxArrow(dwSfxObj, pItemProp->dwSfxObj3, vPosDest, idTarget);
+			pSfx = CreateSfxArrow(XI_ITEM_RANGE_ATK1, pItemProp->dwSfxObj3, vPosDest, idTarget);
 #else
-		g_UserMng.AddCreateSfxAllow(this, dwSfxObj, pItemProp->dwSfxObj3, vPosDest, idTarget);
+		g_UserMng.AddCreateSfxAllow(this, XI_ITEM_RANGE_ATK1, pItemProp->dwSfxObj3, vPosDest, idTarget);
 #endif
 	}
 	else
